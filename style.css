@@ -1,0 +1,180 @@
+/* Wireframe – tylko odcienie szarości. Docelowy styl dojdzie później. */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+[hidden] { display: none !important; }
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  background: #eee;
+  color: #222;
+  line-height: 1.5;
+}
+
+.data {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #777;
+}
+
+h1 { font-size: 28px; line-height: 1.2; }
+
+.przycisk {
+  display: block;
+  width: fit-content;
+  margin: 0 auto;
+  padding: 16px 32px;
+  border: 0;
+  border-radius: 999px;
+  background: #333;
+  color: #fff;
+  font: inherit;
+  font-size: 18px;
+  text-decoration: none;
+}
+
+/* ---------- Strona z kołem ---------- */
+
+.strona-kola {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 24px 0 calc(16px + env(safe-area-inset-bottom));
+  text-align: center;
+  touch-action: none;           /* przesuwanie palcem nie przewija strony */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;  /* przytrzymanie nie otwiera menu */
+}
+
+.scena {
+  --w: min(76vw, 300px, 44vh); /* szerokość karty */
+  --h: calc(var(--w) * 0.6);   /* wysokość karty */
+  position: relative;
+  flex: 1;
+  overflow: hidden;
+  perspective: 800px;
+}
+
+/* transform, opacity i z-index kart ustawia kolo.js – nie ustawiaj ich tu ani nie dodawaj transition */
+.karta {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--w);
+  height: var(--h);
+  margin: calc(var(--h) / -2) 0 0 calc(var(--w) / -2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  border: 2px solid #999;
+  border-radius: 16px;
+  font-size: 22px;
+  color: #555;
+  backface-visibility: hidden;
+}
+.karta img { pointer-events: none; } /* przytrzymanie na zdjęciu nie otwiera menu na Androidzie */
+
+/* Znaczniki pokazujące, która karta jest wybrana */
+.scena::before,
+.scena::after {
+  content: '▶';
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  transform: translateY(-50%);
+  color: #aaa;
+  z-index: 999;
+}
+.scena::after { content: '◀'; left: auto; right: 8px; }
+
+/* Podpowiedzi – widać tylko tę pasującą do stanu koła */
+.podpowiedzi {
+  height: 88px;
+  padding: 0 24px;
+  color: #666;
+}
+.podpowiedzi p { display: none; }
+[data-stan='czeka'] [data-pokaz='czeka'],
+[data-stan='kreci'] [data-pokaz='kreci'] { display: block; }
+
+.strzalka {
+  display: block;
+  font-size: 32px;
+  animation: podskok 1.2s ease-in-out infinite;
+}
+@keyframes podskok { 50% { transform: translateY(-10px); } }
+
+/* Koniec: zostaje sama wygrana karta, pod nią przycisk */
+[data-stan='koniec'] .karta:not(.wygrana) {
+  opacity: 0 !important;
+  transition: opacity 0.6s;
+}
+
+.scena .przycisk {
+  display: none;
+  position: absolute;
+  top: min(calc(50% + var(--h) / 2 + 28px), calc(100% - 72px)); /* na małym ekranie nie ucieka za krawędź */
+  left: 0;
+  right: 0;
+  z-index: 999;
+}
+[data-stan='koniec'] .scena .przycisk {
+  display: block;
+  animation: pojaw 0.5s 0.6s both; /* niewidoczny i nieklikalny przez pierwsze 0,6 s */
+}
+@keyframes pojaw { from { opacity: 0; visibility: hidden; transform: translateY(8px); } }
+
+/* ---------- Strony z treścią (szczegóły, ankieta) ---------- */
+
+.strona-tresci {
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 32px 20px calc(48px + env(safe-area-inset-bottom));
+}
+
+.strona-tresci header { margin-bottom: 24px; }
+.strona-tresci > p { margin-bottom: 16px; }
+
+.zdjecie {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  margin-bottom: 16px;
+  border-radius: 12px;
+  background: #ccc;
+  color: #777;
+  object-fit: cover;
+}
+
+/* Ankieta */
+fieldset {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  background: #fff;
+}
+legend { padding: 0 6px; font-weight: 600; }
+fieldset p { margin-bottom: 8px; color: #777; font-size: 14px; }
+
+label {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 0;
+}
+label input { width: 22px; height: 22px; accent-color: #333; }
+
+.komunikat {
+  margin-bottom: 20px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #ddd;
+  text-align: center;
+}

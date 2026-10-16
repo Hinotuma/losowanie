@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <title>Ankieta</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body class="strona-tresci">
+
+  <header>
+    <p class="data">Dzień 3 · 19 października</p>
+    <h1>Zanim zobaczysz szczegóły…</h1>
+  </header>
+
+  <p>Krótki wstęp do ankiety. Odpowiedz poprawnie, żeby przejść dalej.</p>
+
+  <!-- Poprawne odpowiedzi oznaczasz atrybutem data-ok.
+       radio = jedna odpowiedź, checkbox = kilka odpowiedzi.
+       Każde pytanie z radio musi mieć własne name (p1, p2, p3…) i dokładnie jedno data-ok. -->
+  <form class="ankieta">
+    <fieldset>
+      <legend>1. Pierwsze pytanie?</legend>
+      <label><input type="radio" name="p1"> Odpowiedź A</label>
+      <label><input type="radio" name="p1" data-ok> Odpowiedź B</label>
+      <label><input type="radio" name="p1"> Odpowiedź C</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>2. Drugie pytanie?</legend>
+      <label><input type="radio" name="p2" data-ok> Odpowiedź A</label>
+      <label><input type="radio" name="p2"> Odpowiedź B</label>
+      <label><input type="radio" name="p2"> Odpowiedź C</label>
+    </fieldset>
+
+    <fieldset>
+      <legend>3. Trzecie pytanie?</legend>
+      <p>Zaznacz wszystkie pasujące</p>
+      <label><input type="checkbox" data-ok> Odpowiedź A</label>
+      <label><input type="checkbox"> Odpowiedź B</label>
+      <label><input type="checkbox" data-ok> Odpowiedź C</label>
+    </fieldset>
+
+    <p class="komunikat" hidden>Coś się nie zgadza. Spróbuj jeszcze raz.</p>
+
+    <button class="przycisk">Dalej</button>
+  </form>
+
+  <script>
+    // Dalej puszcza tylko wtedy, gdy zaznaczone są dokładnie te odpowiedzi z data-ok.
+    document.querySelector('.ankieta').addEventListener('submit', e => {
+      e.preventDefault();
+      const dobrze = [...e.target.querySelectorAll('input')]
+        .every(pole => pole.checked === pole.hasAttribute('data-ok'));
+      if (dobrze) location.href = 'szczegoly.html';
+      else document.querySelector('.komunikat').hidden = false;
+    });
+  </script>
+</body>
+</html>
