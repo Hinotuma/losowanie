@@ -5,41 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#2336f1">
-  <title>Dokąd jedziesz?</title>
+  <title>Plan podróży</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
-  <link rel="stylesheet" href="../style.css">
-  <script src="../tryb.js"></script>
+  <link rel="stylesheet" href="../style.css?v=6">
+  <script src="../tryb.js?v=6"></script>
 </head>
 <body class="strona niebieskie">
 
-  <h1 class="plakat schodki"><span>Dokąd</span><span>jedziesz</span><span>(?)</span></h1>
+  <h1 class="plakat schodki"><span>Plan</span><span>podróży</span></h1>
 
   <div class="tabela">
     <p class="tabela-etykieta waski">Twoja podróż <span>✦</span></p>
-    <div class="tabela-tresc"><p>Andaluzja, południe Hiszpanii. Trzy miasta, jedna pętla i&nbsp;dużo słońca w&nbsp;środku zimy.</p></div>
+    <div class="tabela-tresc"><p>12 dni w&nbsp;Andaluzji: Malaga, Ronda i&nbsp;Sewilla, a&nbsp;na koniec znowu Malaga. Dokładne daty dopiszemy, jak będą bilety.</p></div>
     <p class="naklejka naklejka-dol uchwyty">Ferie zimowe w&nbsp;Wielkopolsce:<br>15–28&nbsp;lutego 2027</p>
   </div>
 
+  <!-- Dni: każdy <li> to jeden dzień. Rodzaj dnia w <span class="typ">, plan na deszcz w <span class="plan-b">. -->
   <article class="tabela">
     <p class="tabela-etykieta waski">Przystanek <span>✦</span></p>
     <div class="tabela-tytul waski"><span class="tabela-numer">01</span><h2>Malaga</h2></div>
     <div class="tabela-obrazek"><img src="../obrazki/malaga.webp" alt=""></div>
     <div class="tabela-tresc">
-      <p>Tu zaczynasz. W&nbsp;lutym jest ok.&nbsp;18&nbsp;stopni, więc kurtka szybko ląduje w&nbsp;plecaku, a&nbsp;spod katedry na plażę idziesz jakiś kwadrans. Malaga to miasto Picassa, arabskich murów i&nbsp;smażonych rybek jedzonych na stojąco przy barze.</p>
-      <h3 class="waski">Co zobaczyć</h3>
-      <ul class="gwiazdki">
-        <li><b>Alcazaba i&nbsp;zamek Gibralfaro</b> – arabska twierdza z&nbsp;XI wieku, połączona murami z&nbsp;zamkiem na wzgórzu, skąd widać port i&nbsp;całe miasto.</li>
-        <li><b>Teatr rzymski</b> – ma ok.&nbsp;2000&nbsp;lat, a&nbsp;odkryto go przypadkiem dopiero w&nbsp;1951&nbsp;roku, przy pracach pod nowy ogród.</li>
-        <li><b>Museo Picasso Málaga</b> – Picasso urodził się tu w&nbsp;1881&nbsp;roku. Jego dom rodzinny stoi kilka minut dalej, przy Plaza de la Merced.</li>
-        <li><b>Mercado de Atarazanas</b> – hala targowa w&nbsp;miejscu arabskiej stoczni. Wchodzisz przez bramę z&nbsp;XIV wieku, a&nbsp;w&nbsp;środku czekają owoce, oliwki i&nbsp;tapas.</li>
-      </ul>
-      <h3 class="waski">Ciekawostka</h3>
-      <p>Katedra ma przezwisko „La Manquita”, czyli „Jednoręka”, bo jej południowej wieży nigdy nie dokończono.</p>
-      <h3 class="waski">Pogoda w&nbsp;lutym</h3>
-      <p>W&nbsp;dzień ok.&nbsp;18°C, w&nbsp;nocy ok.&nbsp;8°C. Morze ma 15–16°C – spacer brzegiem tak, pływanie tylko dla odważnych.</p>
+      <p>Miasto Picassa, arabskich murów i&nbsp;smażonych rybek jedzonych na stojąco przy barze. W&nbsp;lutym ok. 18°C w&nbsp;dzień, więc kurtka szybko ląduje w&nbsp;plecaku.</p>
     </div>
+    <ul class="dni">
+      <li><span class="dzien"><small>Dzień</small>1</span><p class="opis"><span class="typ">Przejazd</span><br>Przylot, a&nbsp;wieczorem spacer po Soho i&nbsp;hali targowej Atarazanas.</p></li>
+      <li><span class="dzien"><small>Dzień</small>2</span><p class="opis"><span class="typ">Natura</span><br>Caminito del Rey – 3–4 godziny marszu kładkami przyklejonymi do skał wąwozu. Pociągiem do El Chorro.<span class="plan-b">Plan B na deszcz: Muzeum Picassa.</span></p></li>
+      <li><span class="dzien"><small>Dzień</small>3</span><p class="opis"><span class="typ">Miasto</span><br>Arabska twierdza Alcazaba i&nbsp;zamek Gibralfaro z&nbsp;widokiem na port, a&nbsp;potem może katedra.<span class="plan-b">Plan B na deszcz: Muzeum Picassa.</span></p></li>
+    </ul>
   </article>
 
   <article class="tabela">
@@ -47,19 +42,12 @@
     <div class="tabela-tytul waski"><span class="tabela-numer">02</span><h2>Ronda</h2></div>
     <div class="tabela-obrazek"><img src="../obrazki/ronda.webp" alt=""></div>
     <div class="tabela-tresc">
-      <p>Najmniejsze z&nbsp;trzech miast, za to z&nbsp;najbardziej szalonym położeniem: stoi na skale przeciętej wąwozem głębokim na ok.&nbsp;100&nbsp;metrów. Weź cieplejszą bluzę, bo jest tu wyżej i&nbsp;chłodniej niż nad morzem.</p>
-      <h3 class="waski">Co zobaczyć</h3>
-      <ul class="gwiazdki">
-        <li><b>Puente Nuevo</b> – most wysoki na 98&nbsp;metrów, budowany ponad 40&nbsp;lat (1751–1793). Nad środkowym łukiem było kiedyś więzienie.</li>
-        <li><b>Plaza de Toros</b> – arena z&nbsp;1785&nbsp;roku, jedna z&nbsp;pierwszych w&nbsp;Hiszpanii zbudowanych w&nbsp;całości z&nbsp;kamienia.</li>
-        <li><b>Casa del Rey Moro i&nbsp;La Mina</b> – ok.&nbsp;200&nbsp;stopni wykutych w&nbsp;skale w&nbsp;XIV wieku prowadzi w&nbsp;dół, aż do rzeki.</li>
-        <li><b>Łaźnie arabskie</b> – jedne z&nbsp;najlepiej zachowanych na Półwyspie Iberyjskim, z&nbsp;gwiaździstymi okienkami w&nbsp;sklepieniu.</li>
-      </ul>
-      <h3 class="waski">Ciekawostka</h3>
-      <p>Orson Welles, twórca „Obywatela Kane’a”, tak kochał Rondę, że jego prochy złożono w&nbsp;starej studni na farmie pod miastem.</p>
-      <h3 class="waski">Pogoda w&nbsp;lutym</h3>
-      <p>W&nbsp;dzień 13–15°C, w&nbsp;nocy 4–6°C. Miasto leży ok.&nbsp;740&nbsp;m n.p.m., więc bywają nocne przymrozki.</p>
+      <p>Miasteczko na skale przeciętej wąwozem głębokim na ok. 100 metrów. Jest wyżej i&nbsp;chłodniej niż nad morzem, więc przyda się cieplejsza bluza.</p>
     </div>
+    <ul class="dni">
+      <li><span class="dzien"><small>Dzień</small>4</span><p class="opis"><span class="typ">Przejazd</span><br>Autobusem do Rondy. Po południu most Puente Nuevo, punkty widokowe i&nbsp;łaźnie arabskie.</p></li>
+      <li><span class="dzien"><small>Dzień</small>5</span><p class="opis"><span class="typ">Natura</span><br>Spacer z&nbsp;Benaoján do Jimera de Líbar (ok. 1,5 h) albo szlak wzdłuż wąwozu.<span class="plan-b">Plan B na deszcz: arena Plaza de Toros i&nbsp;kopalnia Casa del Rey Moro.</span></p></li>
+    </ul>
   </article>
 
   <article class="tabela">
@@ -67,27 +55,32 @@
     <div class="tabela-tytul waski"><span class="tabela-numer">03</span><h2>Sewilla</h2></div>
     <div class="tabela-obrazek"><img src="../obrazki/sewilla.webp" alt=""></div>
     <div class="tabela-tresc">
-      <p>Stolica Andaluzji i&nbsp;największe miasto na trasie. W&nbsp;jeden dzień przejdziesz przez plany „Gry o&nbsp;tron” i&nbsp;„Gwiezdnych wojen”, a&nbsp;po drodze miniesz więcej drzewek pomarańczowych, niż zdążysz policzyć.</p>
-      <h3 class="waski">Co zobaczyć</h3>
-      <ul class="gwiazdki">
-        <li><b>Real Alcázar</b> – najstarszy wciąż używany pałac królewski w&nbsp;Europie. W&nbsp;jego ogrodach kręcono Dorne z&nbsp;„Gry o&nbsp;tron”.</li>
-        <li><b>Plaza de España</b> – ogromne półkole z&nbsp;1928&nbsp;roku, które w&nbsp;„Ataku klonów” zagrało planetę Naboo.</li>
-        <li><b>Katedra i&nbsp;Giralda</b> – największa gotycka katedra na świecie. Na wieżę nie wchodzi się po schodach, tylko 35&nbsp;rampami.</li>
-        <li><b>Las Setas</b> – gigantyczne drewniane „grzyby” z&nbsp;kładką widokową na dachach miasta.</li>
-      </ul>
-      <h3 class="waski">Ciekawostka</h3>
-      <p>Na ulicach rośnie ponad 40&nbsp;tysięcy drzew pomarańczowych, ale owoce są gorzkie – za to z&nbsp;pomarańczy z&nbsp;Alcázaru robi się marmoladę dla króla Karola III.</p>
-      <h3 class="waski">Pogoda w&nbsp;lutym</h3>
-      <p>W&nbsp;dzień ok.&nbsp;18°C, w&nbsp;nocy ok.&nbsp;7°C. Morza tu nie ma – Sewilla leży nad rzeką Gwadalkiwir.</p>
+      <p>Stolica Andaluzji. Przejdziesz przez plany „Gry o&nbsp;tron” i&nbsp;„Gwiezdnych wojen”, a&nbsp;po drodze miniesz więcej drzewek pomarańczowych, niż zdążysz policzyć.</p>
     </div>
+    <ul class="dni">
+      <li><span class="dzien"><small>Dzień</small>6</span><p class="opis"><span class="typ">Przejazd</span><br>Autobusem do Sewilli. Plaza de España i&nbsp;Park Marii Luizy.</p></li>
+      <li><span class="dzien"><small>Dzień</small>7</span><p class="opis"><span class="typ">Miasto</span><br>Pałac Real Alcázar (2–3 h) i&nbsp;uliczki dzielnicy Santa Cruz.</p></li>
+      <li><span class="dzien"><small>Dzień</small>8</span><p class="opis"><span class="typ">Luz</span><br>Bez planu: Triana, targ, sjesta, a&nbsp;wieczorem flamenco.</p></li>
+      <li><span class="dzien"><small>Dzień</small>9</span><p class="opis"><span class="typ">Miasto</span><br>Wypad do Kordoby (pociągiem ok. 45 min): meczet-katedra Mezquita i&nbsp;dzielnica żydowska.</p></li>
+    </ul>
+  </article>
+
+  <article class="tabela">
+    <p class="tabela-etykieta waski">Przystanek <span>✦</span></p>
+    <div class="tabela-tytul waski"><span class="tabela-numer">04</span><h2>Znowu Malaga</h2></div>
+    <ul class="dni">
+      <li><span class="dzien"><small>Dzień</small>10</span><p class="opis"><span class="typ">Przejazd</span><br>Pociągiem do Malagi, wieczorem plaża Malagueta albo zachód słońca z&nbsp;Gibralfaro.</p></li>
+      <li><span class="dzien"><small>Dzień</small>11</span><p class="opis"><span class="typ">Luz</span><br>Spacer brzegiem do Pedregalejo i&nbsp;pakowanie.</p></li>
+      <li><span class="dzien"><small>Dzień</small>12</span><p class="opis"><span class="typ">Powrót</span><br>Lot do domu.</p></li>
+    </ul>
   </article>
 
   <article class="dymek">
     <h2>Trasa</h2>
     <ul class="gwiazdki">
-      <li>Malaga → Ronda: ok.&nbsp;100&nbsp;km, autem ok.&nbsp;1,5&nbsp;h górskimi drogami.</li>
-      <li>Ronda → Sewilla: ok.&nbsp;128&nbsp;km, autem 1,5–2&nbsp;h.</li>
-      <li>Sewilla → Malaga: ok.&nbsp;205&nbsp;km, autem ok.&nbsp;2&nbsp;h 20&nbsp;min albo szybkim pociągiem ok.&nbsp;2&nbsp;h.</li>
+      <li>Malaga → Ronda: ok. 100&nbsp;km, autobusem ok. 2&nbsp;h.</li>
+      <li>Ronda → Sewilla: ok. 128&nbsp;km, autobusem ok. 2&nbsp;h.</li>
+      <li>Sewilla → Malaga: ok. 205&nbsp;km, pociągiem 2–3&nbsp;h.</li>
     </ul>
   </article>
 

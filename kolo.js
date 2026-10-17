@@ -1,28 +1,31 @@
-// Koło losujące – wspólny skrypt dla wszystkich trzech dni.
+// Koło losujące – wspólny skrypt dla wszystkich kół.
 //
-// Tryb końcówki ustawiasz w <body data-tryb="...">:
-//   zwalnia – po przesunięciu w górę koło samo zwalnia aż do zatrzymania (dzień 1)
-//   stop    – koło kręci się, dotknięcie ekranu je zatrzymuje (dzień 2)
-//   trzymaj – koło kręci się, przytrzymanie kciuka hamuje; koło przejeżdża
-//             za wygraną kartę i cofa się do niej (dzień 3)
+// Jak koło zaczyna hamować, ustawiasz w <body data-tryb="...">:
+//   zwalnia – po przesunięciu w górę koło chwilę się kręci i samo hamuje
+//   stop    – koło kręci się, dotknięcie ekranu zaczyna hamowanie
+//   trzymaj – koło kręci się, przytrzymanie kciuka zaczyna hamowanie
+// Samo hamowanie jest zawsze takie samo: długie, koło przejeżdża 1–3 słowa za wygraną, chwilę stoi
+// i cofa się do niej (czasem o jedno za daleko i jeszcze raz do przodu) – za każdym razem trochę inaczej.
 //
 // Każda .karta to jedno słowo na kole. Wygraną oznaczasz klasą "wygrana" – koło zawsze na niej staje,
 // a potem z boku wjeżdża karta .wynik (obrazek, pełna nazwa i przycisk – wszystko w HTML).
 // Losowanie zapisuje się dopiero po zatrzymaniu koła – przerwane odbędzie się od nowa.
-// Żeby przetestować jeszcze raz, dopisz do adresu ?reset
+// Żeby przetestować jeszcze raz, dopisz do adresu ?reset (albo użyj trybu testowego z tryb.js).
 
-const PREDKOSC = 840;      // stopni na sekundę, gdy koło kręci się w kółko (stop, trzymaj)
-const CZAS_ZWALNIANIA = 5; // sekundy hamowania w trybie "zwalnia"
-const PRZEJAZD = 0.6;      // o jaką część karty koło przejedzie za wygraną (trzymaj)
+const PREDKOSC = 840;  // stopni na sekundę, gdy koło kręci się w kółko
+const ROZPED = 1.6;    // sekundy kręcenia przed samoczynnym hamowaniem (tryb "zwalnia")
+const ROZSTAW = 1.6;   // odstęp między słowami (× wysokość słowa) – im więcej, tym koło wyższe
+const ROZMYCIE = 2.5;  // rozmycie słów przy pełnej prędkości (px)
 
 const body = document.body;
 const tryb = body.dataset.tryb;
 const klucz = 'kolo-' + body.dataset.dzien;
+const scena = document.querySelector('.scena');
 const karty = [...document.querySelectorAll('.karta')];
 const krok = 360 / karty.length;
 const cel = -karty.findIndex(k => k.classList.contains('wygrana')) * krok; // obrót, przy którym wygrana stoi na wprost
 
-let promien;      // promień koła w px, liczony z wysokości karty
+let promien;      // promień koła w px, liczony z wysokości słowa
 let obrot = 0;    // aktualny obrót koła w stopniach
 let ruch = null;  // co koło robi w danej klatce
 let start = 0;    // kiedy koło ruszyło
@@ -34,9 +37,8 @@ if (!TEST) try { pamiec = localStorage; } catch (e) {}
 
 if (location.search.includes('reset')) pamiec?.removeItem(klucz);
 
-// Promień tak dobrany, żeby sąsiednie słowa na wprost miały odstęp jednej wysokości karty.
 function zmierz() {
-  promien = karty[0].offsetHeight / Math.sin(Math.PI / karty.length);
+  promien = karty[0].offsetHeight * ROZSTAW / Math.sin(Math.PI / karty.length);
 }
 
 // Rozstawia słowa na kole. Kąt 0 = na wprost. Koło jest „spłaszczone” (kąt / 2),
@@ -54,8 +56,13 @@ function rysuj() {
 let poprzednia = performance.now();
 function klatka() {
   const teraz = performance.now();
-  if (ruch) ruch(teraz, (teraz - poprzednia) / 1000);
+  const dt = (teraz - poprzednia) / 1000;
+  const przed = obrot;
+  if (ruch) ruch(teraz, dt);
   poprzednia = teraz;
+  // Lekkie rozmycie rośnie z prędkością koła
+  const predkosc = dt > 0 ? Math.abs(obrot - przed) / dt : 0;
+  scena.style.filter = predkosc > 60 ? `blur(${Math.min(ROZMYCIE, predkosc / PREDKOSC * ROZMYCIE).toFixed(1)}px)` : '';
   rysuj();
   requestAnimationFrame(klatka);
 }
@@ -77,36 +84,33 @@ function jedz(droga, czas, krzywa, potem) {
   };
 }
 
-const zwalniaj = t => 1 - (1 - t) ** 3;                                // szybko → stop
+const zwalniaj = t => 1 - (1 - t) ** 4;                                // szybko → długo się wlecze → stop
 const plynnie = t => (t < 0.5 ? 4 * t ** 3 : 1 - (2 - 2 * t) ** 3 / 2); // łagodnie rusza i staje
+const pauza = (ms, potem) => setTimeout(potem, ms);
 
 function zakrec() {
   start = performance.now();
-  if (tryb === 'zwalnia') {
-    body.dataset.stan = 'hamuje';
-    jedz(drogaDoCelu(4 * 360), CZAS_ZWALNIANIA, zwalniaj, koniec);
-  } else {
-    body.dataset.stan = 'kreci';
-    ruch = (teraz, dt) => {
-      obrot += PREDKOSC * dt;
-      // trzymaj: kciuk, który został na ekranie po przesunięciu, też hamuje
-      if (tryb === 'trzymaj' && palecY !== null && teraz - start > 700) hamuj();
-    };
-  }
+  body.dataset.stan = 'kreci';
+  ruch = (teraz, dt) => {
+    obrot += PREDKOSC * dt;
+    if (tryb === 'zwalnia' && teraz - start > ROZPED * 1000) hamuj();
+    // trzymaj: kciuk, który został na ekranie po przesunięciu, też hamuje
+    if (tryb === 'trzymaj' && palecY !== null && teraz - start > 700) hamuj();
+  };
 }
 
-// Czas hamowania = 3 × droga / prędkość, żeby koło nie szarpnęło przy przejściu.
+// Hamowanie: przejazd 1–3 słowa za wygraną, pauza i powrót (czasem o jedno za daleko i z powrotem).
+// Czas pierwszego odcinka = 4 × droga / prędkość, żeby koło nie szarpnęło przy przejściu.
 function hamuj() {
   body.dataset.stan = 'hamuje';
-  if (tryb === 'stop') {
-    const droga = drogaDoCelu(krok / 2);
-    jedz(droga, 3 * droga / PREDKOSC, zwalniaj, koniec);
-  } else {
-    const zaCel = PRZEJAZD * krok;
-    const droga = drogaDoCelu(1.5 * 360) + zaCel;
-    jedz(droga, 3 * droga / PREDKOSC, zwalniaj, () =>
-      setTimeout(() => jedz(-zaCel, 1, plynnie, koniec), 400));
-  }
+  const za = 1 + Math.floor(Math.random() * 3);
+  const zaDaleko = Math.random() < 0.4;
+  const droga = drogaDoCelu(1.5 * 360) + za * krok;
+  const powrot = 0.5 + 0.3 * za;
+  jedz(droga, 4 * droga / PREDKOSC, zwalniaj, () => pauza(500, () =>
+    zaDaleko
+      ? jedz(-(za + 1) * krok, powrot + 0.3, plynnie, () => pauza(350, () => jedz(krok, 0.7, plynnie, koniec)))
+      : jedz(-za * krok, powrot, plynnie, koniec)));
 }
 
 function koniec() {
@@ -114,11 +118,11 @@ function koniec() {
   pamiec?.setItem(klucz, 'tak');
 }
 
-// Przesunięcie palcem w górę kręci kołem, dotknięcie w trakcie kręcenia hamuje.
+// Przesunięcie palcem w górę kręci kołem, dotknięcie (stop) lub przytrzymanie (trzymaj) hamuje.
 let palecY = null;
 addEventListener('pointerdown', e => {
   palecY = e.clientY;
-  if (body.dataset.stan === 'kreci' && performance.now() - start > 700) hamuj();
+  if (body.dataset.stan === 'kreci' && tryb !== 'zwalnia' && performance.now() - start > 700) hamuj();
 });
 addEventListener('pointermove', e => {
   if (document.querySelector('.odliczanie:not([hidden])')) return; // koło jeszcze zablokowane

@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
-  <link rel="stylesheet" href="../style.css">
-  <script src="../tryb.js"></script>
+  <link rel="stylesheet" href="../style.css?v=6">
+  <script src="../tryb.js?v=6"></script>
 </head>
 <body class="strona niebieskie">
 
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Przypięty w lewym dolnym rogu ekranu -->
-    <button type="button" class="wybierz-za-mnie">✦ Wybierz za mnie</button>
+    <button type="button" class="przycisk uchwyty przycisk-przypiety wybierz-za-mnie">✦ Wybierz za mnie</button>
   </form>
 
   <section class="podsumowanie" hidden>
@@ -69,9 +69,19 @@
       <h2>Smacznego!</h2>
       <p>Zamówienie poszło do kuchni.</p>
     </div>
+
+    <!-- Kolejne losowanie odblokowuje się o 17:00 (czas.js) -->
+    <article class="tabela" hidden data-do="2026-10-17T17:00+02:00">
+      <p class="tabela-etykieta waski">Kolejne losowanie <span>✦</span></p>
+      <p class="naklejka naklejka-gora uchwyty">17:00</p>
+      <div class="tabela-tresc"><p>Odblokuje się za</p><p class="licznik" data-licznik>--:--:--</p></div>
+    </article>
+    <a class="przycisk uchwyty" hidden data-od="2026-10-17T17:00+02:00" href="wycieczka.html">Losuj dalej →</a>
+
     <button class="przycisk przycisk-obrys uchwyty zmien">Zmień zamówienie</button>
   </section>
 
+  <script src="../czas.js?v=6"></script>
   <script>
     // Zamówienie trafia do skrzynki na ntfy.sh – podgląd na Twoim telefonie: zamowienie.html
     const SKRZYNKA = 'https://ntfy.sh/losowanie-9026bace04454ade' + (TEST ? '-test' : ''); // test: osobna skrzynka

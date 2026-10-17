@@ -250,7 +250,7 @@ body {
 }
 .karta.na-wprost { color: var(--papier); }
 [data-stan='czeka'] .karta.na-wprost,
-[data-stan='kreci'] .karta.na-wprost { color: var(--niebieski-2); } /* środek zasłania toast */
+[data-stan='kreci']:has(.toast[data-pokaz='kreci']) .karta.na-wprost { color: var(--niebieski-2); } /* środek zasłania toast */
 [data-stan='koniec'] .karta:not(.wygrana) { opacity: 0 !important; transition: opacity 0.4s; }
 
 /* Wynik: karta wjeżdża z boku na cały ekran */
@@ -489,41 +489,15 @@ body {
 .menu fieldset { padding: 8px 0; }
 .przyciski { display: grid; gap: 14px; }
 
-/* „Wybierz za mnie” – żółty dymek przypięty w lewym dolnym rogu, jak czat */
+/* „Wybierz za mnie” – żółty przycisk przypięty w lewym dolnym rogu ekranu, jak czat */
 .menu { padding-bottom: 72px; }
-.wybierz-za-mnie {
+.przycisk-przypiety {
   position: fixed;
   z-index: 50;
   left: 16px;
-  bottom: calc(24px + env(safe-area-inset-bottom));
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 14px 20px;
-  border: 1px solid var(--niebieski);
-  border-radius: 24px;
-  background: var(--zolty);
-  color: var(--tusz);
-  font: inherit;
-  font-stretch: 64%;
-  font-weight: 850;
-  font-size: 19px;
-  line-height: 1;
-  letter-spacing: 0.03em;
-  text-transform: uppercase;
-  animation: kiwanie 2.4s ease-in-out infinite;
-}
-.wybierz-za-mnie::after {
-  content: '';
-  position: absolute;
-  bottom: -11px;
-  left: 18px;
-  width: 14px;
-  height: 14px;
-  border: 1px solid var(--niebieski);
-  border-top: 0;
-  background: inherit;
-  border-bottom-left-radius: 100%;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  width: auto;
+  box-shadow: 0 6px 0 var(--tusz);
 }
 
 .zamowienie { list-style: none; }
@@ -574,3 +548,37 @@ dialog {
 }
 dialog::backdrop { background: rgba(35, 54, 241, 0.85); }
 dialog p { margin-bottom: 24px; font-size: 19px; line-height: 1.3; letter-spacing: -0.02em; }
+
+/* ---------- Plan podróży: dni w karcie miasta ---------- */
+
+.dni { list-style: none; }
+.dni li { display: grid; grid-template-columns: 64px 1fr; }
+.dni li + li { border-top: 1px solid var(--niebieski); }
+.dzien {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 12px 4px;
+  border-right: 1px solid var(--niebieski);
+  font-stretch: 70%;
+  font-weight: 900;
+  font-size: 30px;
+  line-height: 0.9;
+}
+.dzien small { font-size: 11px; font-weight: 850; letter-spacing: 0.06em; text-transform: uppercase; }
+.dni .opis { padding: 12px 14px 14px; font-size: 16px; line-height: 1.35; }
+.typ {
+  display: inline-block;
+  margin-bottom: 6px;
+  padding: 3px 6px;
+  border: 1px solid currentColor;
+  font-stretch: 64%;
+  font-weight: 850;
+  font-size: 13px;
+  line-height: 1;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.plan-b { display: block; margin-top: 6px; font-size: 14px; color: var(--szary); }
