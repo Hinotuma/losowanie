@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
-  <link rel="stylesheet" href="../style.css?v=6">
-  <script src="../tryb.js?v=6"></script>
+  <link rel="stylesheet" href="../style.css?v=7">
+  <script src="../tryb.js?v=7"></script>
 </head>
 <body class="strona niebieskie">
 
@@ -28,6 +28,7 @@
     // Ta sama skrzynka co w menu.html. ntfy.sh trzyma wiadomości 12 godzin,
     // więc ostatnie zamówienie zapamiętujemy też na tym telefonie.
     const SKRZYNKA = 'https://ntfy.sh/losowanie-9026bace04454ade' + (TEST ? '-test' : ''); // test: osobna skrzynka
+    const KLUCZ = 'zamowienie-17' + (TEST ? '-test' : '');
     const stan = document.querySelector('.stan');
     let pamiec = null;
     try { pamiec = localStorage; } catch (e) {}
@@ -50,11 +51,11 @@
       .then(tekst => {
         const wiadomosci = tekst.split('\n').filter(Boolean).map(JSON.parse).filter(w => w.event === 'message');
         const ostatnia = wiadomosci[wiadomosci.length - 1];
-        if (ostatnia) pamiec?.setItem('zamowienie-17', JSON.stringify(ostatnia));
-        pokaz(ostatnia || JSON.parse(pamiec?.getItem('zamowienie-17') || 'null'));
+        if (ostatnia) pamiec?.setItem(KLUCZ, JSON.stringify(ostatnia));
+        pokaz(ostatnia || JSON.parse(pamiec?.getItem(KLUCZ) || 'null'));
       })
       .catch(() => {
-        const zapisane = JSON.parse(pamiec?.getItem('zamowienie-17') || 'null');
+        const zapisane = JSON.parse(pamiec?.getItem(KLUCZ) || 'null');
         if (zapisane) pokaz(zapisane);
         else stan.textContent = 'Nie udało się sprawdzić – brak internetu?';
       });

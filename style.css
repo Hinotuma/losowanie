@@ -2,7 +2,7 @@
 
 :root {
   --niebieski: #2336f1;
-  --niebieski-2: #4254ff;   /* przygaszone słowa na kole */
+  --niebieski-2: #6676ff;   /* przygaszone słowa na kole */
   --peryw: #a3b4f4;         /* jasne linie i strzałki na niebieskim */
   --papier: #f7f7f6;
   --tusz: #131313;
@@ -224,8 +224,8 @@ body {
   background: var(--peryw);
   opacity: 0.6;
 }
-.scena::before { top: calc(var(--srodek) - min(6.5vw, 40px)); }
-.scena::after { top: calc(var(--srodek) + min(6.5vw, 40px)); }
+.scena::before { top: calc(var(--srodek) - min(10.4vw, 64px)); }
+.scena::after { top: calc(var(--srodek) + min(10.4vw, 64px)); }
 
 /* Słowa na kole. transform, opacity i z-index ustawia kolo.js – nie ustawiaj ich tu. */
 .karta {
@@ -305,6 +305,7 @@ body {
   justify-content: center;
   gap: 28px;
   padding: 24px 16px;
+  text-align: center;
 }
 
 /* ---------- Strony z treścią ---------- */
@@ -392,7 +393,7 @@ body {
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
-.naklejka-gora { position: absolute; z-index: 2; top: -20px; right: 14px; font-size: 26px; transform: rotate(-4deg); }
+.naklejka-gora { position: absolute; z-index: 2; top: -20px; right: -6px; font-size: 26px; transform: rotate(-4deg); }
 .naklejka-dol { position: absolute; z-index: 2; bottom: -26px; left: 12px; right: 12px; width: fit-content; font-size: min(19px, 5.3vw); transform: rotate(-2deg); }
 .tabela:has(.naklejka-dol) { margin-bottom: 56px; }
 .tabela:has(.naklejka-dol) .tabela-tresc { padding-bottom: 48px; }
@@ -497,8 +498,9 @@ body {
   left: 16px;
   bottom: calc(20px + env(safe-area-inset-bottom));
   width: auto;
-  box-shadow: 0 6px 0 var(--tusz);
 }
+@media (max-width: 359px) { .przycisk-przypiety { min-height: 48px; padding: 8px 14px; font-size: 17px; } }
+.podsumowanie .dymek::after { left: 48px; right: auto; transform: none; } /* ogonek z dala od naklejki 17:00 */
 
 .zamowienie { list-style: none; }
 .zamowienie li {
@@ -581,4 +583,4 @@ dialog p { margin-bottom: 24px; font-size: 19px; line-height: 1.3; letter-spacin
   letter-spacing: 0.05em;
   text-transform: uppercase;
 }
-.plan-b { display: block; margin-top: 6px; font-size: 14px; color: var(--szary); }
+.plan-b { display: block; margin-top: 6px; font-size: 14px; color: #666; }

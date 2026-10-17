@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
-  <link rel="stylesheet" href="../style.css?v=6">
-  <script src="../tryb.js?v=6"></script>
+  <link rel="stylesheet" href="../style.css?v=7">
+  <script src="../tryb.js?v=7"></script>
 </head>
 <body class="strona niebieskie">
 
@@ -81,7 +81,7 @@
     <button class="przycisk przycisk-obrys uchwyty zmien">Zmień zamówienie</button>
   </section>
 
-  <script src="../czas.js?v=6"></script>
+  <script src="../czas.js?v=7"></script>
   <script>
     // Zamówienie trafia do skrzynki na ntfy.sh – podgląd na Twoim telefonie: zamowienie.html
     const SKRZYNKA = 'https://ntfy.sh/losowanie-9026bace04454ade' + (TEST ? '-test' : ''); // test: osobna skrzynka
@@ -89,6 +89,7 @@
     const menu = document.querySelector('.menu');
     const pola = [...menu.querySelectorAll('input')];
     const podsumowanie = document.querySelector('.podsumowanie');
+    const KLUCZ = 'menu-17' + (TEST ? '-test' : '');
     const komunikat = document.querySelector('.komunikat');
     const blad = document.querySelector('.blad');
     const nazwa = pole => pole.nextElementSibling.querySelector('b').textContent;
@@ -126,7 +127,7 @@
         .then(odpowiedz => {
           if (!odpowiedz.ok) throw new Error();
           pokazZamowienie();
-          pamiec?.setItem('menu-17', JSON.stringify(dania));
+          pamiec?.setItem(KLUCZ, JSON.stringify(dania));
         })
         .catch(() => (blad.hidden = false));
     });
@@ -137,7 +138,7 @@
     });
 
     // Zamówienie już było – od razu pokaż podsumowanie (z zaznaczonymi daniami do ewentualnej zmiany)
-    const zapisane = JSON.parse(pamiec?.getItem('menu-17') || 'null');
+    const zapisane = JSON.parse(pamiec?.getItem(KLUCZ) || 'null');
     if (zapisane) {
       pola.forEach(pole => (pole.checked = zapisane.includes(nazwa(pole))));
       pokazZamowienie();
