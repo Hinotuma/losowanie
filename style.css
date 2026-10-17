@@ -79,6 +79,24 @@ body {
 
 .uchwyty { position: relative; }
 .uchwyty::after,
+.danie input:checked + span::after {
+  --u: var(--zolty);
+  --r: var(--niebieski);
+  content: '';
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--u) 0 0) 1px 1px / 6px 6px,
+    linear-gradient(var(--u) 0 0) calc(100% - 1px) 1px / 6px 6px,
+    linear-gradient(var(--u) 0 0) 1px calc(100% - 1px) / 6px 6px,
+    linear-gradient(var(--u) 0 0) calc(100% - 1px) calc(100% - 1px) / 6px 6px,
+    linear-gradient(var(--r) 0 0) 0 0 / 8px 8px,
+    linear-gradient(var(--r) 0 0) 100% 0 / 8px 8px,
+    linear-gradient(var(--r) 0 0) 0 100% / 8px 8px,
+    linear-gradient(var(--r) 0 0) 100% 100% / 8px 8px;
+  background-repeat: no-repeat;
+}
 
 /* ---------- Przyciski ---------- */
 
@@ -231,6 +249,8 @@ body {
   backface-visibility: hidden;
 }
 .karta.na-wprost { color: var(--papier); }
+[data-stan='czeka'] .karta.na-wprost,
+[data-stan='kreci'] .karta.na-wprost { color: var(--niebieski-2); } /* środek zasłania toast */
 [data-stan='koniec'] .karta:not(.wygrana) { opacity: 0 !important; transition: opacity 0.4s; }
 
 /* Wynik: karta wjeżdża z boku na cały ekran */
@@ -373,9 +393,10 @@ body {
   text-transform: uppercase;
 }
 .naklejka-gora { position: absolute; z-index: 2; top: -20px; right: 14px; font-size: 26px; transform: rotate(-4deg); }
-.naklejka-dol { position: absolute; z-index: 2; bottom: -26px; left: 12px; right: 40px; width: fit-content; transform: rotate(-2deg); }
-.tabela:has(.naklejka-dol) { margin-bottom: 26px; }
-.tabela:has(.naklejka-dol) .tabela-tresc { padding-bottom: 40px; }
+.naklejka-dol { position: absolute; z-index: 2; bottom: -26px; left: 12px; right: 12px; width: fit-content; font-size: min(19px, 5.3vw); transform: rotate(-2deg); }
+.tabela:has(.naklejka-dol) { margin-bottom: 56px; }
+.tabela:has(.naklejka-dol) .tabela-tresc { padding-bottom: 48px; }
+.tabela:has(.naklejka-gora) .tabela-etykieta span { visibility: hidden; } /* naklejka zajmuje miejsce gwiazdki */
 
 /* Dymki jak w FAQ na clipo.one */
 .dymek {
@@ -463,23 +484,6 @@ body {
   text-transform: uppercase;
 }
 .danie input:checked + span { background: var(--zolty); border-color: var(--niebieski); border-radius: 0; color: var(--tusz); }
-.danie input:checked + span::after {
-  --u: var(--zolty);
-  --r: var(--niebieski);
-  content: '';
-  position: absolute;
-  inset: -4px;
-  background:
-    linear-gradient(var(--u) 0 0) 1px 1px / 6px 6px,
-    linear-gradient(var(--u) 0 0) calc(100% - 1px) 1px / 6px 6px,
-    linear-gradient(var(--u) 0 0) 1px calc(100% - 1px) / 6px 6px,
-    linear-gradient(var(--u) 0 0) calc(100% - 1px) calc(100% - 1px) / 6px 6px,
-    linear-gradient(var(--r) 0 0) 0 0 / 8px 8px,
-    linear-gradient(var(--r) 0 0) 100% 0 / 8px 8px,
-    linear-gradient(var(--r) 0 0) 0 100% / 8px 8px,
-    linear-gradient(var(--r) 0 0) 100% 100% / 8px 8px;
-  background-repeat: no-repeat;
-}
 .danie input:focus-visible + span { outline: 2px solid var(--papier); outline-offset: 3px; }
 
 .menu fieldset { padding: 8px 0; }
@@ -516,7 +520,8 @@ body {
   left: 18px;
   width: 14px;
   height: 14px;
-  border-left: 1px solid var(--niebieski);
+  border: 1px solid var(--niebieski);
+  border-top: 0;
   background: inherit;
   border-bottom-left-radius: 100%;
 }
