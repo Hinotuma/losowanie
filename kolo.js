@@ -11,8 +11,8 @@
 // Losowanie zapisuje się dopiero po zatrzymaniu koła – przerwane odbędzie się od nowa.
 // Żeby przetestować jeszcze raz, dopisz do adresu ?reset
 
-const PREDKOSC = 540;      // stopni na sekundę, gdy koło kręci się w kółko (stop, trzymaj)
-const CZAS_ZWALNIANIA = 6; // sekundy hamowania w trybie "zwalnia"
+const PREDKOSC = 840;      // stopni na sekundę, gdy koło kręci się w kółko (stop, trzymaj)
+const CZAS_ZWALNIANIA = 5; // sekundy hamowania w trybie "zwalnia"
 const PRZEJAZD = 0.6;      // o jaką część karty koło przejedzie za wygraną (trzymaj)
 
 const body = document.body;
@@ -45,7 +45,7 @@ function rysuj() {
   karty.forEach((karta, i) => {
     const kat = ((i * krok + obrot) % 360 + 540) % 360 - 180;
     karta.style.transform = `translateZ(${-promien}px) rotateX(${kat / 2}deg) translateZ(${promien}px)`;
-    karta.style.opacity = Math.min(1, (180 - Math.abs(kat)) / 60);
+    karta.style.opacity = Math.min(1, (180 - Math.abs(kat)) / 90);
     karta.style.zIndex = 180 - Math.round(Math.abs(kat));
     karta.classList.toggle('na-wprost', Math.abs(kat) < krok / 2);
   });
@@ -84,7 +84,7 @@ function zakrec() {
   start = performance.now();
   if (tryb === 'zwalnia') {
     body.dataset.stan = 'hamuje';
-    jedz(drogaDoCelu(3 * 360), CZAS_ZWALNIANIA, zwalniaj, koniec);
+    jedz(drogaDoCelu(4 * 360), CZAS_ZWALNIANIA, zwalniaj, koniec);
   } else {
     body.dataset.stan = 'kreci';
     ruch = (teraz, dt) => {

@@ -31,6 +31,7 @@
 }
 [hidden] { display: none !important; }
 img { display: block; max-width: 100%; }
+fieldset { border: 0; min-width: 0; }
 
 body {
   font-family: 'Archivo', system-ui, sans-serif;
@@ -62,7 +63,7 @@ body {
 }
 
 /* Nagłówek ze słowami „po schodkach” */
-.schodki { font-size: 34px; }
+.schodki { font-size: 34px; line-height: 1; }
 .schodki span { display: block; }
 .schodki span:nth-child(2) { padding-left: 1.4em; }
 .schodki span:nth-child(3) { padding-left: 0.5em; }
@@ -77,24 +78,7 @@ body {
 /* ---------- Uchwyty jak przy zaznaczeniu w Figmie ---------- */
 
 .uchwyty { position: relative; }
-.uchwyty::after {
-  --u: var(--zolty);
-  --r: var(--niebieski);
-  content: '';
-  position: absolute;
-  inset: -4px;
-  pointer-events: none;
-  background:
-    linear-gradient(var(--u) 0 0) 1px 1px / 6px 6px,
-    linear-gradient(var(--u) 0 0) calc(100% - 1px) 1px / 6px 6px,
-    linear-gradient(var(--u) 0 0) 1px calc(100% - 1px) / 6px 6px,
-    linear-gradient(var(--u) 0 0) calc(100% - 1px) calc(100% - 1px) / 6px 6px,
-    linear-gradient(var(--r) 0 0) 0 0 / 8px 8px,
-    linear-gradient(var(--r) 0 0) 100% 0 / 8px 8px,
-    linear-gradient(var(--r) 0 0) 0 100% / 8px 8px,
-    linear-gradient(var(--r) 0 0) 100% 100% / 8px 8px;
-  background-repeat: no-repeat;
-}
+.uchwyty::after,
 
 /* ---------- Przyciski ---------- */
 
@@ -115,6 +99,7 @@ body {
   font-stretch: 64%;
   font-weight: 850;
   font-size: 20px;
+  line-height: 1.05;
   letter-spacing: 0.03em;
   text-transform: uppercase;
   text-align: center;
@@ -138,7 +123,10 @@ body {
 }
 .przycisk-ciemny.uchwyty::after { --u: var(--niebieski); --r: var(--papier); }
 
-.przycisk-maly { min-height: 40px; font-size: 15px; width: auto; padding: 8px 16px; }
+.przycisk-maly { display: inline-flex; width: auto; min-height: 40px; padding: 8px 16px; font-size: 16px; }
+
+/* Zdanie zamiast krótkiej odpowiedzi – zwykłe litery, żeby dało się przeczytać */
+.przycisk-zdanie { font-stretch: 100%; font-weight: 600; font-size: 17px; line-height: 1.2; letter-spacing: 0; text-transform: none; }
 
 /* ---------- Strona z kołem ---------- */
 
@@ -161,24 +149,35 @@ body {
   padding: calc(20px + env(safe-area-inset-top)) 16px 0;
   pointer-events: none;
 }
-.naglowek .schodki { font-size: clamp(26px, 8vw, 40px); }
+.strona-kola { --srodek: 60%; }  /* wysokość środka koła */
+.strona-kola .naglowek { text-align: center; }
+.strona-kola .schodki { font-size: clamp(34px, 11.5vw, 60px); }
+.strona-kola .schodki span { padding-left: 0; }
 [data-stan='koniec'] .naglowek { opacity: 0; transition: opacity 0.3s; }
 
-/* Toast z instrukcją – żółta etykieta z uchwytami, widać tylko tę pasującą do stanu koła */
+/* Toast z instrukcją na środku ekranu – widać tylko ten pasujący do stanu koła, znika po wykonaniu akcji */
 .toast {
   display: none;
+  position: absolute;
+  z-index: 300;
+  top: var(--srodek);
+  left: 0;
+  right: 0;
   width: fit-content;
-  margin-top: 18px;
-  padding: 10px 14px;
+  max-width: calc(100% - 32px);
+  margin: 0 auto;
+  translate: 0 -50%;
+  padding: 14px 18px;
   border: 1px solid var(--niebieski);
   background: var(--zolty);
   color: var(--tusz);
   font-stretch: 64%;
   font-weight: 850;
-  font-size: 19px;
+  font-size: min(24px, 6.4vw);
   line-height: 1;
   letter-spacing: 0.03em;
   text-transform: uppercase;
+  text-align: center;
   animation: wjazd 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both, kiwanie 2.4s 0.5s ease-in-out infinite;
 }
 [data-stan='czeka'] .toast[data-pokaz='czeka'],
@@ -190,7 +189,6 @@ body {
 @keyframes podskok { 50% { transform: translateY(-4px); } }
 
 .scena {
-  --srodek: 60%;  /* wysokość środka koła */
   position: absolute;
   inset: 0;
   overflow: hidden;
@@ -273,7 +271,7 @@ body {
   padding: 16px 20px 24px;
   text-align: center;
 }
-.wynik-obrazek { width: min(72%, 42vh); aspect-ratio: 1; object-fit: contain; }
+.wynik-obrazek { width: min(100%, 44vh); aspect-ratio: 1; object-fit: contain; }
 .wynik-tytul { font-size: clamp(28px, 9vw, 44px); }
 .wynik .przycisk { max-width: 320px; }
 
@@ -297,14 +295,18 @@ body {
   padding: calc(28px + env(safe-area-inset-top)) 16px calc(56px + env(safe-area-inset-bottom));
 }
 .strona > * { max-width: 520px; margin-left: auto; margin-right: auto; }
-.strona > * + * { margin-top: 24px; }
+.strona > * + *,
+.menu > * + *,
+.podsumowanie > * + * { margin-top: 32px; }
+.strona > dialog { margin: auto; }
+.strona > .schodki { font-size: clamp(28px, 9vw, 46px); }
+.na-dole { margin-top: 48px; }
 
 .wstep { font-size: 17px; }
-.niebieskie .wstep { color: var(--peryw); }
 
 /* Karta-tabela jak na thepatchsystem.com */
 .tabela {
-  overflow: hidden;
+  position: relative;
   border: 1px solid var(--niebieski);
   border-radius: 6px;
   background: #fff;
@@ -315,10 +317,12 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 12px;
   min-height: 56px;
-  padding: 0 16px;
+  padding: 10px 16px;
   font-size: 21px;
 }
+.tabela-etykieta span, .wynik-etykieta span { font-size: 18px; line-height: 1; }
 .tabela-tytul { display: flex; }
 .tabela-numer {
   flex: 0 0 84px;
@@ -329,12 +333,13 @@ body {
   font-size: 46px;
   font-stretch: 70%;
 }
-.tabela-tytul h2 { flex: 1; padding: 18px 16px; font-size: 38px; }
+.tabela-tytul h2 { flex: 1; padding: 18px 16px; font-size: clamp(30px, 10vw, 38px); }
 .tabela-obrazek { padding: 16px; background: #fff; }
 .tabela-obrazek img { width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 1; object-fit: contain; }
 .tabela-tresc { padding: 18px 16px 20px; font-size: 17px; line-height: 1.4; }
 .tabela-tresc > * + * { margin-top: 12px; }
 .tabela-tresc h3 { font-size: 21px; }
+.tabela-tresc > h3 { margin-top: 28px; }
 .tabela-przycisk { padding: 16px; }
 
 /* Lista z gwiazdkami jak na thepatchsystem.com */
@@ -353,7 +358,7 @@ body {
   mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath d='M4.875 2.588L5.5 0l.625 2.588c.214.887.575 1.655 1.06 2.272.482.613 1.085 1.074 1.782 1.345L11 7l-2.033.794c-.699.274-1.301.733-1.786 1.349-.481.613-.843 1.381-1.057 2.268L5.5 14l-.625-2.588c-.21-.871-.562-1.627-1.043-2.253-.495-.631-1.099-1.091-1.799-1.365L0 7l2.033-.795c.7-.274 1.304-.733 1.785-1.346.481-.612.841-1.38 1.057-2.271z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
-/* Etykieta-naklejka (data ferii, godzina) */
+/* Etykieta-naklejka (data ferii, godzina) – przyklejona w poprzek krawędzi białej karty */
 .naklejka {
   display: inline-block;
   padding: 8px 12px;
@@ -367,12 +372,16 @@ body {
   letter-spacing: 0.03em;
   text-transform: uppercase;
 }
+.naklejka-gora { position: absolute; z-index: 2; top: -20px; right: 14px; font-size: 26px; transform: rotate(-4deg); }
+.naklejka-dol { position: absolute; z-index: 2; bottom: -26px; left: 12px; right: 40px; width: fit-content; transform: rotate(-2deg); }
+.tabela:has(.naklejka-dol) { margin-bottom: 26px; }
+.tabela:has(.naklejka-dol) .tabela-tresc { padding-bottom: 40px; }
 
 /* Dymki jak w FAQ na clipo.one */
 .dymek {
   position: relative;
   padding: 28px 24px;
-  border-radius: 32px;
+  border-radius: 24px;
   background: var(--mieta);
   color: var(--tusz);
 }
@@ -440,12 +449,12 @@ body {
   color: var(--niebieski);
   transition: background-color 0.15s;
 }
-.danie img { width: 100%; aspect-ratio: 1; padding: 12px 12px 4px; object-fit: contain; }
+.danie img { width: 100%; aspect-ratio: 1; padding: 18px 16px 6px; object-fit: contain; }
 .danie b {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   flex: 1;
-  padding: 10px 12px 12px;
+  padding: 10px 14px 18px;
   font-stretch: 64%;
   font-weight: 850;
   font-size: 18px;
@@ -473,7 +482,44 @@ body {
 }
 .danie input:focus-visible + span { outline: 2px solid var(--papier); outline-offset: 3px; }
 
+.menu fieldset { padding: 8px 0; }
 .przyciski { display: grid; gap: 14px; }
+
+/* „Wybierz za mnie” – żółty dymek przypięty w lewym dolnym rogu, jak czat */
+.menu { padding-bottom: 72px; }
+.wybierz-za-mnie {
+  position: fixed;
+  z-index: 50;
+  left: 16px;
+  bottom: calc(24px + env(safe-area-inset-bottom));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 20px;
+  border: 1px solid var(--niebieski);
+  border-radius: 24px;
+  background: var(--zolty);
+  color: var(--tusz);
+  font: inherit;
+  font-stretch: 64%;
+  font-weight: 850;
+  font-size: 19px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  animation: kiwanie 2.4s ease-in-out infinite;
+}
+.wybierz-za-mnie::after {
+  content: '';
+  position: absolute;
+  bottom: -11px;
+  left: 18px;
+  width: 14px;
+  height: 14px;
+  border-left: 1px solid var(--niebieski);
+  background: inherit;
+  border-bottom-left-radius: 100%;
+}
 
 .zamowienie { list-style: none; }
 .zamowienie li {
@@ -489,6 +535,8 @@ body {
   text-transform: uppercase;
 }
 .zamowienie li + li { border-top: 1px solid var(--niebieski); }
+.zamowienie li { min-height: 56px; }
+.zamowienie:empty { display: none; }
 .zamowienie img { width: 64px; height: 64px; object-fit: contain; }
 
 /* ---------- Ankieta ---------- */
