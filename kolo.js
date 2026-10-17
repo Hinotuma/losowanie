@@ -16,6 +16,7 @@ const PREDKOSC = 840;  // stopni na sekundę, gdy koło kręci się w kółko
 const ROZPED = 1.6;    // sekundy kręcenia przed samoczynnym hamowaniem (tryb "zwalnia")
 const ROZSTAW = 1.6;   // odstęp między słowami (× wysokość słowa) – im więcej, tym koło wyższe
 const ROZMYCIE = 2.5;  // rozmycie słów przy pełnej prędkości (px)
+const UCIECIE = 0.8;   // przy 80% hamowania koło przechodzi w sprężynę, zanim prawie stanie (bez martwej pauzy)
 
 const body = document.body;
 const tryb = body.dataset.tryb;
@@ -75,12 +76,13 @@ function drogaDoCelu(min) {
 }
 
 // Płynny przejazd o `droga` stopni w `czas` sekund, a potem `potem()`.
-function jedz(droga, czas, krzywa, potem) {
+// `koniecT` < 1 kończy przejazd wcześniej (na tej części czasu).
+function jedz(droga, czas, krzywa, potem, koniecT = 1) {
   const od = obrot, t0 = performance.now();
   ruch = teraz => {
-    const t = Math.min(1, (teraz - t0) / 1000 / czas);
+    const t = Math.min(koniecT, (teraz - t0) / 1000 / czas);
     obrot = od + droga * krzywa(t);
-    if (t === 1) { ruch = null; potem(); }
+    if (t === koniecT) { ruch = null; potem(); }
   };
 }
 
@@ -118,8 +120,9 @@ function hamuj() {
   body.dataset.stan = 'hamuje';
   const za = (1 + Math.random() * 2) * krok;
   const droga = drogaDoCelu(360) + za;
+  const niedojechane = droga * (1 - zwalniaj(UCIECIE)); // ostatnie ~1,5° hamowania, których już nie jedziemy
   jedz(droga, 4 * droga / PREDKOSC, zwalniaj, () =>
-    sprezyna(za, 0.3 + Math.random() * 0.15, 1.1 + Math.random() * 0.4, koniec));
+    sprezyna(za - niedojechane, 0.3 + Math.random() * 0.15, 1.1 + Math.random() * 0.4, koniec), UCIECIE);
 }
 
 function koniec() {
@@ -131,7 +134,10 @@ function koniec() {
 let palecY = null;
 addEventListener('pointerdown', e => {
   palecY = e.clientY;
-  if (body.dataset.stan === 'kreci' && tryb !== 'zwalnia' && performance.now() - start > 700) hamuj();
+  if (body.dataset.stan === 'kreci' && tryb !== 'zwalnia' && performance.now() - start > 700) {
+    obrot += PREDKOSC * (performance.now() - poprzednia) / 1000; // dojedź do chwili dotknięcia – bez szarpnięcia
+    hamuj();
+  }
 });
 addEventListener('pointermove', e => {
   if (document.querySelector('.odliczanie:not([hidden])')) return; // koło jeszcze zablokowane
