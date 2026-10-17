@@ -295,7 +295,7 @@ body {
 .wynik-tytul { font-size: clamp(28px, 9vw, 44px); }
 .wynik .przycisk { max-width: 320px; }
 
-/* Odliczanie zasłaniające koło (dzień 3 przed północą) */
+/* Odliczanie zasłaniające koło, dopóki losowanie jest zablokowane */
 .odliczanie {
   position: absolute;
   inset: 0;
@@ -307,6 +307,10 @@ body {
   padding: 24px 16px;
   text-align: center;
 }
+.odliczanie .schodki { font-size: clamp(30px, 10vw, 52px); }
+.odliczanie p:not(.licznik) { margin-bottom: -16px; font-size: 18px; }
+
+.wynik-opis { max-width: 300px; color: var(--tusz); font-size: 18px; line-height: 1.35; }
 
 /* ---------- Strony z treścią ---------- */
 

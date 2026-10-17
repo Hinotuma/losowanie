@@ -4,8 +4,8 @@
 //   zwalnia – po przesunięciu w górę koło chwilę się kręci i samo hamuje
 //   stop    – koło kręci się, dotknięcie ekranu zaczyna hamowanie
 //   trzymaj – koło kręci się, przytrzymanie kciuka zaczyna hamowanie
-// Samo hamowanie jest zawsze takie samo: długie, koło przejeżdża 1–3 słowa za wygraną, chwilę stoi
-// i cofa się do niej (czasem o jedno za daleko i jeszcze raz do przodu) – za każdym razem trochę inaczej.
+// Samo hamowanie jest zawsze takie samo: długie, koło przejeżdża 1–3 słowa za wygraną i wraca do niej
+// jak na sprężynie – lekko ją mija, odbija się coraz słabiej i staje. Za każdym razem trochę inaczej.
 //
 // Każda .karta to jedno słowo na kole. Wygraną oznaczasz klasą "wygrana" – koło zawsze na niej staje,
 // a potem z boku wjeżdża karta .wynik (obrazek, pełna nazwa i przycisk – wszystko w HTML).
@@ -19,7 +19,7 @@ const ROZMYCIE = 2.5;  // rozmycie słów przy pełnej prędkości (px)
 
 const body = document.body;
 const tryb = body.dataset.tryb;
-const klucz = 'kolo-' + body.dataset.dzien;
+const klucz = 'kolo-v2-' + body.dataset.dzien; // v2: wcześniejsze losowania (np. testowe) już się nie liczą
 const scena = document.querySelector('.scena');
 const karty = [...document.querySelectorAll('.karta')];
 const krok = 360 / karty.length;
@@ -84,9 +84,22 @@ function jedz(droga, czas, krzywa, potem) {
   };
 }
 
-const zwalniaj = t => 1 - (1 - t) ** 4;                                // szybko → długo się wlecze → stop
-const plynnie = t => (t < 0.5 ? 4 * t ** 3 : 1 - (2 - 2 * t) ** 3 / 2); // łagodnie rusza i staje
-const pauza = (ms, potem) => setTimeout(potem, ms);
+const zwalniaj = t => 1 - (1 - t) ** 4; // szybko → długo się wlecze → stop
+
+// Powrót jak na sprężynie: koło startuje z `wychylenie` stopni za wygraną (z zerową prędkością),
+// mija ją, odbija się coraz słabiej i staje. tlumienie 0–1 (mniej = więcej odbić), okres w sekundach.
+function sprezyna(wychylenie, tlumienie, okres, potem) {
+  const wygrana = obrot - wychylenie;
+  const w = 2 * Math.PI / okres, wd = w * Math.sqrt(1 - tlumienie ** 2), t0 = performance.now();
+  let gotowe = false;
+  ruch = teraz => {
+    const t = (teraz - t0) / 1000;
+    const obwiednia = wychylenie * Math.exp(-tlumienie * w * t);
+    obrot = wygrana + obwiednia * (Math.cos(wd * t) + (tlumienie * w / wd) * Math.sin(wd * t));
+    if (!gotowe && obwiednia < 3) { gotowe = true; potem(); }   // wynik już może wjeżdżać
+    if (obwiednia < 0.2) { obrot = wygrana; ruch = null; }       // resztka drgań niewidoczna
+  };
+}
 
 function zakrec() {
   start = performance.now();
@@ -99,18 +112,14 @@ function zakrec() {
   };
 }
 
-// Hamowanie: przejazd 1–3 słowa za wygraną, pauza i powrót (czasem o jedno za daleko i z powrotem).
+// Hamowanie: przejazd 1–3 słowa za wygraną, a potem sprężysty powrót do niej.
 // Czas pierwszego odcinka = 4 × droga / prędkość, żeby koło nie szarpnęło przy przejściu.
 function hamuj() {
   body.dataset.stan = 'hamuje';
-  const za = 1 + Math.floor(Math.random() * 3);
-  const zaDaleko = Math.random() < 0.4;
-  const droga = drogaDoCelu(1.5 * 360) + za * krok;
-  const powrot = 0.5 + 0.3 * za;
-  jedz(droga, 4 * droga / PREDKOSC, zwalniaj, () => pauza(500, () =>
-    zaDaleko
-      ? jedz(-(za + 1) * krok, powrot + 0.3, plynnie, () => pauza(350, () => jedz(krok, 0.7, plynnie, koniec)))
-      : jedz(-za * krok, powrot, plynnie, koniec)));
+  const za = (1 + Math.random() * 2) * krok;
+  const droga = drogaDoCelu(360) + za;
+  jedz(droga, 4 * droga / PREDKOSC, zwalniaj, () =>
+    sprezyna(za, 0.3 + Math.random() * 0.15, 1.1 + Math.random() * 0.4, koniec));
 }
 
 function koniec() {

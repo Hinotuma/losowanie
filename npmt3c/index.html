@@ -5,18 +5,24 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex">
   <meta name="theme-color" content="#2336f1">
-  <title>Wylosuj swój prezent</title>
+  <title>Wylosuj nagrodę</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
-  <link rel="stylesheet" href="../style.css?v=7">
-  <script src="../tryb.js?v=7"></script>
+  <link rel="stylesheet" href="../style.css?v=8">
+  <script src="../tryb.js?v=8"></script>
 </head>
 <body class="strona-kola niebieskie" data-dzien="perfumy" data-tryb="stop" data-stan="czeka">
 
-  <!-- Drugi kod QR – Paulina dostaje go w escape roomie -->
+  <!-- Drugi kod QR – Paulina dostaje go w escape roomie. Nagroda odblokowuje się o północy (zasłona z odliczaniem, czas.js). -->
+  <section class="odliczanie niebieskie" hidden data-do="2026-10-19T00:00+02:00">
+    <h1 class="plakat schodki"><span>Nagroda</span><span>o&nbsp;północy</span></h1>
+    <p>Odblokuje się za</p>
+    <p class="licznik" data-licznik>--:--:--</p>
+  </section>
+
   <header class="naglowek">
-    <h1 class="plakat schodki"><span>Wylosuj</span><span>swój</span><span>prezent</span></h1>
+    <h1 class="plakat schodki"><span>Wylosuj</span><span>swoją</span><span>nagrodę</span></h1>
   </header>
 
   <!-- Instrukcje na środku ekranu – znikają, gdy akcja zostanie wykonana -->
@@ -40,9 +46,11 @@
     <div class="wynik-srodek">
       <img class="wynik-obrazek" src="../obrazki/perfumy.webp" alt="">
       <h2 class="wynik-tytul plakat">Perfumy</h2>
+      <p class="wynik-opis">Zanim się nimi spryskasz, sprawdź dokładnie pudełko.</p>
     </div>
   </section>
 
-  <script src="../kolo.js?v=7"></script>
+  <script src="../czas.js?v=8"></script>
+  <script src="../kolo.js?v=8"></script>
 </body>
 </html>
