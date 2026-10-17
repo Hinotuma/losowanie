@@ -6,7 +6,8 @@
 //   trzymaj – koło kręci się, przytrzymanie kciuka hamuje; koło przejeżdża
 //             za wygraną kartę i cofa się do niej (dzień 3)
 //
-// Wygraną kartę oznaczasz klasą "wygrana". Koło zawsze na niej staje.
+// Każda .karta to jedno słowo na kole. Wygraną oznaczasz klasą "wygrana" – koło zawsze na niej staje,
+// a potem z boku wjeżdża karta .wynik (obrazek, pełna nazwa i przycisk – wszystko w HTML).
 // Losowanie zapisuje się dopiero po zatrzymaniu koła – przerwane odbędzie się od nowa.
 // Żeby przetestować jeszcze raz, dopisz do adresu ?reset
 
@@ -27,22 +28,26 @@ let ruch = null;  // co koło robi w danej klatce
 let start = 0;    // kiedy koło ruszyło
 
 // Pamięć przeglądarki. Gdy jest zablokowana, losowanie po prostu nie zostanie zapamiętane.
+// W trybie testowym (tryb.js) też nic nie zapamiętujemy, żeby można było kręcić w kółko.
 let pamiec = null;
-try { pamiec = localStorage; } catch (e) {}
+if (!TEST) try { pamiec = localStorage; } catch (e) {}
 
 if (location.search.includes('reset')) pamiec?.removeItem(klucz);
 
+// Promień tak dobrany, żeby sąsiednie słowa na wprost miały odstęp jednej wysokości karty.
 function zmierz() {
-  promien = karty[0].offsetHeight * 0.6 / Math.tan(Math.PI / karty.length);
+  promien = karty[0].offsetHeight / Math.sin(Math.PI / karty.length);
 }
 
-// Rozstawia karty na obwodzie koła. Kąt 0 = karta na wprost.
+// Rozstawia słowa na kole. Kąt 0 = na wprost. Koło jest „spłaszczone” (kąt / 2),
+// więc widać 7 słów naraz, a jedno z tyłu znika i przeskakuje z góry na dół.
 function rysuj() {
   karty.forEach((karta, i) => {
     const kat = ((i * krok + obrot) % 360 + 540) % 360 - 180;
-    karta.style.transform = `translateZ(${-promien}px) rotateX(${kat}deg) translateZ(${promien}px)`;
-    karta.style.opacity = Math.max(0, Math.cos(kat * Math.PI / 180));
+    karta.style.transform = `translateZ(${-promien}px) rotateX(${kat / 2}deg) translateZ(${promien}px)`;
+    karta.style.opacity = Math.min(1, (180 - Math.abs(kat)) / 60);
     karta.style.zIndex = 180 - Math.round(Math.abs(kat));
+    karta.classList.toggle('na-wprost', Math.abs(kat) < krok / 2);
   });
 }
 
@@ -116,6 +121,7 @@ addEventListener('pointerdown', e => {
   if (body.dataset.stan === 'kreci' && performance.now() - start > 700) hamuj();
 });
 addEventListener('pointermove', e => {
+  if (document.querySelector('.odliczanie:not([hidden])')) return; // koło jeszcze zablokowane
   if (body.dataset.stan === 'czeka' && palecY !== null && palecY - e.clientY > 40) zakrec();
 });
 addEventListener('pointerup', () => (palecY = null));

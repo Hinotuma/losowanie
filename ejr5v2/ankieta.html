@@ -4,58 +4,83 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex">
-  <title>Ankieta</title>
+  <meta name="theme-color" content="#f7f7f6">
+  <title>Zanim polecisz…</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
   <link rel="stylesheet" href="../style.css">
+  <script src="../tryb.js"></script>
 </head>
-<body class="strona-tresci">
+<body class="strona">
 
-  <header>
-    <p class="data">Dzień 3 · 19 października</p>
-    <h1>Zanim zobaczysz szczegóły…</h1>
-  </header>
+  <h1 class="plakat schodki"><span>Zanim</span><span>polecisz</span><span>(?)</span></h1>
 
-  <p>Krótki wstęp do ankiety. Odpowiedz poprawnie, żeby przejść dalej.</p>
+  <p class="wstep">Odpowiedz na kilka pytań.</p>
 
-  <!-- Poprawne odpowiedzi oznaczasz atrybutem data-ok.
-       radio = jedna odpowiedź, checkbox = kilka odpowiedzi.
-       Każde pytanie z radio musi mieć własne name (p1, p2, p3…) i dokładnie jedno data-ok. -->
-  <form class="ankieta">
-    <fieldset>
-      <legend>1. Pierwsze pytanie?</legend>
-      <label><input type="radio" name="p1"> Odpowiedź A</label>
-      <label><input type="radio" name="p1" data-ok> Odpowiedź B</label>
-      <label><input type="radio" name="p1"> Odpowiedź C</label>
-    </fieldset>
+  <!-- Jak to działa:
+       data-dalej="#id" – odpowiedź się blokuje i pojawia się pytanie o tym id
+       data-okno="#id"  – otwiera okienko z komunikatem; przycisk w okienku je zamyka i można odpowiedzieć jeszcze raz
+       zwykły link       – przejście na inną stronę (ostatnie „Tak”) -->
 
-    <fieldset>
-      <legend>2. Drugie pytanie?</legend>
-      <label><input type="radio" name="p2" data-ok> Odpowiedź A</label>
-      <label><input type="radio" name="p2"> Odpowiedź B</label>
-      <label><input type="radio" name="p2"> Odpowiedź C</label>
-    </fieldset>
+  <section class="dymek pytanie" id="p1">
+    <h2>Czy masz tydzień wolnego w ferie?</h2>
+    <div class="odpowiedzi">
+      <button class="przycisk" data-dalej="#p2">Tak</button>
+      <button class="przycisk" data-okno="#okno-ferie">Nie</button>
+    </div>
+  </section>
 
-    <fieldset>
-      <legend>3. Trzecie pytanie?</legend>
-      <p>Zaznacz wszystkie pasujące</p>
-      <label><input type="checkbox" data-ok> Odpowiedź A</label>
-      <label><input type="checkbox"> Odpowiedź B</label>
-      <label><input type="checkbox" data-ok> Odpowiedź C</label>
-    </fieldset>
+  <section class="dymek dymek-zolty pytanie" id="p2" hidden>
+    <h2>Czy obiecujesz być zdrowa w czasie ferii?</h2>
+    <div class="odpowiedzi">
+      <button class="przycisk" data-dalej="#p3">Tak</button>
+      <button class="przycisk" data-dalej="#p2-czosnek">Nie</button>
+    </div>
+  </section>
 
-    <p class="komunikat" hidden>Coś się nie zgadza. Spróbuj jeszcze raz.</p>
+  <section class="dymek dymek-rozowy pytanie" id="p2-czosnek" hidden>
+    <h2>Czy obiecujesz jeść dużo czosnku i chodzić zimą w czapce, żeby nie rozchorować się w ferie?</h2>
+    <div class="odpowiedzi">
+      <button class="przycisk" data-dalej="#p3">Tak</button>
+      <button class="przycisk" data-okno="#okno-mama">Nie</button>
+    </div>
+  </section>
 
-    <button class="przycisk">Dalej</button>
-  </form>
+  <section class="dymek dymek-niebieski pytanie" id="p3" hidden>
+    <h2>Czy obiecujesz w pełni skupić się na odpoczywaniu i cieszeniu się podróżą?</h2>
+    <div class="odpowiedzi">
+      <a class="przycisk" href="sukces.html">Tak</a>
+      <button class="przycisk" data-okno="#okno-maruda">Nie, jestem panią marudą, pogromcą dobrej zabawy, chyba wolę zostać w Kępnie</button>
+    </div>
+  </section>
+
+  <dialog id="okno-ferie">
+    <p>Czy coś Ci się przypadkiem nie pomyliło? W ferie masz 2 tygodnie wolnego!</p>
+    <form method="dialog"><button class="przycisk uchwyty">Popraw swoją odpowiedź</button></form>
+  </dialog>
+
+  <dialog id="okno-mama">
+    <p>Powiem mamie, że chcesz być chora.</p>
+    <form method="dialog"><button class="przycisk uchwyty">Popraw swoją odpowiedź</button></form>
+  </dialog>
+
+  <dialog id="okno-maruda">
+    <p>W Twoim życiu będą się pojawiać osoby, które będą mówiły: „Aaaa, nie jedźmy do Hiszpanii, bo tam będzie fajnie”. Ta osoba ma rację – tam będzie fajnie, ale zapomniała dodać, że jest jebaną marudą. Inna osoba powie Ci: „Tak, będzie fajnie, nie zapomnijmy wziąć aparatu”. Takimi osobami chcę się otaczać.</p>
+    <form method="dialog"><button class="przycisk uchwyty">Zmień odpowiedź</button></form>
+  </dialog>
 
   <script>
-    // Dalej puszcza tylko wtedy, gdy zaznaczone są dokładnie te odpowiedzi z data-ok.
-    document.querySelector('.ankieta').addEventListener('submit', e => {
-      e.preventDefault();
-      const dobrze = [...e.target.querySelectorAll('input')]
-        .every(pole => pole.checked === pole.hasAttribute('data-ok'));
-      if (dobrze) location.href = 'szczegoly.html';
-      else document.querySelector('.komunikat').hidden = false;
-    });
+    document.querySelectorAll('[data-dalej]').forEach(przycisk => przycisk.addEventListener('click', () => {
+      przycisk.classList.add('wybrana');
+      przycisk.closest('.pytanie').querySelectorAll('button').forEach(b => (b.disabled = true));
+      const nastepne = document.querySelector(przycisk.dataset.dalej);
+      nastepne.hidden = false;
+      nastepne.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }));
+
+    document.querySelectorAll('[data-okno]').forEach(przycisk => przycisk.addEventListener('click', () =>
+      document.querySelector(przycisk.dataset.okno).showModal()));
   </script>
 </body>
 </html>

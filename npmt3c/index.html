@@ -4,32 +4,42 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="robots" content="noindex">
-  <title>18 października</title>
+  <meta name="theme-color" content="#2336f1">
+  <title>Wylosuj swój prezent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
   <link rel="stylesheet" href="../style.css">
+  <script src="../tryb.js"></script>
 </head>
-<body class="strona-kola" data-dzien="18" data-tryb="stop" data-stan="czeka">
+<body class="strona-kola niebieskie" data-dzien="18" data-tryb="stop" data-stan="czeka">
 
-  <header>
-    <p class="data">Dzień 2 · 18 października</p>
-    <h1>Losowanie</h1>
+  <header class="naglowek">
+    <h1 class="plakat schodki"><span>Wylosuj</span><span>swój</span><span>prezent</span></h1>
+    <p class="toast uchwyty" data-pokaz="czeka"><span class="strzalka">↑</span> Przesuń palcem w górę</p>
+    <p class="toast uchwyty" data-pokaz="kreci">Dotknij ekranu, aby zatrzymać</p>
   </header>
 
+  <!-- Słowa na kole: maks. 9 liter, żeby zmieściły się na telefonie -->
   <main class="scena">
-    <div class="karta">Kafel 1</div>
-    <div class="karta">Kafel 2</div>
-    <div class="karta wygrana">Kafel 3</div>
-    <div class="karta">Kafel 4</div>
-    <div class="karta">Kafel 5</div>
-    <div class="karta">Kafel 6</div>
-    <div class="karta">Kafel 7</div>
-    <div class="karta">Kafel 8</div>
-    <a class="przycisk" href="szczegoly.html">Zobacz szczegóły</a>
+    <div class="karta">U babci</div>
+    <div class="karta">Kosmetyki</div>
+    <div class="karta wygrana">Wycieczka</div>
+    <div class="karta">Poradnik</div>
+    <div class="karta">Sweter</div>
+    <div class="karta">Kubek</div>
+    <div class="karta">Kalendarz</div>
+    <div class="karta">Figurka</div>
   </main>
 
-  <footer class="podpowiedzi">
-    <p data-pokaz="czeka"><span class="strzalka">↑</span>Przesuń palcem w górę, aby zakręcić</p>
-    <p data-pokaz="kreci">Dotknij ekranu, aby zatrzymać</p>
-  </footer>
+  <section class="wynik">
+    <p class="wynik-etykieta waski">Twoja nagroda <span>✦</span></p>
+    <div class="wynik-srodek">
+      <img class="wynik-obrazek" src="../obrazki/wycieczka.webp" alt="">
+      <h2 class="wynik-tytul plakat">Wycieczka z rodziną</h2>
+      <a class="przycisk uchwyty" href="szczegoly.html">Pokaż</a>
+    </div>
+  </section>
 
   <script src="../kolo.js"></script>
 </body>

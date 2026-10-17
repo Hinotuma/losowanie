@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2336f1">
+  <title>Zamówienie Pauliny</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../tryb.js"></script>
+</head>
+<body class="strona niebieskie">
+
+  <!-- Podgląd tylko dla Ciebie – nigdzie nie ma do niego linku. -->
+  <h1 class="plakat schodki"><span>Zamówienie</span><span>Pauliny</span></h1>
+
+  <div class="tabela">
+    <p class="tabela-etykieta waski stan">Sprawdzam…</p>
+    <ul class="zamowienie"></ul>
+  </div>
+
+  <button class="przycisk przycisk-obrys uchwyty" onclick="location.reload()">Odśwież</button>
+
+  <script>
+    // Ta sama skrzynka co w menu.html. ntfy.sh trzyma wiadomości 12 godzin,
+    // więc ostatnie zamówienie zapamiętujemy też na tym telefonie.
+    const SKRZYNKA = 'https://ntfy.sh/losowanie-9026bace04454ade' + (TEST ? '-test' : ''); // test: osobna skrzynka
+    const stan = document.querySelector('.stan');
+    let pamiec = null;
+    try { pamiec = localStorage; } catch (e) {}
+
+    function pokaz(zamowienie) {
+      if (!zamowienie) return (stan.textContent = 'Jeszcze nic nie zamówiła');
+      const godzina = new Date(zamowienie.time * 1000).toLocaleString('pl-PL', { weekday: 'long', hour: '2-digit', minute: '2-digit' });
+      stan.textContent = 'Złożone: ' + godzina;
+      const lista = document.querySelector('.zamowienie');
+      lista.innerHTML = '';
+      zamowienie.message.split(', ').forEach(danie => {
+        const li = document.createElement('li');
+        li.textContent = danie;
+        lista.append(li);
+      });
+    }
+
+    fetch(SKRZYNKA + '/json?poll=1&since=all')
+      .then(odpowiedz => odpowiedz.text())
+      .then(tekst => {
+        const wiadomosci = tekst.split('\n').filter(Boolean).map(JSON.parse).filter(w => w.event === 'message');
+        const ostatnia = wiadomosci[wiadomosci.length - 1];
+        if (ostatnia) pamiec?.setItem('zamowienie-17', JSON.stringify(ostatnia));
+        pokaz(ostatnia || JSON.parse(pamiec?.getItem('zamowienie-17') || 'null'));
+      })
+      .catch(() => {
+        const zapisane = JSON.parse(pamiec?.getItem('zamowienie-17') || 'null');
+        if (zapisane) pokaz(zapisane);
+        else stan.textContent = 'Nie udało się sprawdzić – brak internetu?';
+      });
+  </script>
+</body>
+</html>

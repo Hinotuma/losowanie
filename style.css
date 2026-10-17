@@ -1,37 +1,144 @@
-/* Wireframe – tylko odcienie szarości. Docelowy styl dojdzie później. */
+/* Styl na wzór clipo.one i thepatchsystem.com. Jeden font: Archivo (Google Fonts) w trzech szerokościach. */
+
+:root {
+  --niebieski: #2336f1;
+  --niebieski-2: #4254ff;   /* przygaszone słowa na kole */
+  --peryw: #a3b4f4;         /* jasne linie i strzałki na niebieskim */
+  --papier: #f7f7f6;
+  --tusz: #131313;
+  --zolty: #fad84c;
+  --mieta: #9be6c5;
+  --roz: #f7b7d4;
+  --szary: #858585;
+  --siatka: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='95' height='95' fill='none'%3E%3Cg stroke='%23D3D3D3' stroke-opacity='.4' stroke-width='.5' stroke-dasharray='1.91 4.77'%3E%3Crect x='-46.75' y='47.25' width='94.5' height='94.5'/%3E%3Crect x='-46.75' y='-47.75' width='94.5' height='94.5'/%3E%3Crect x='48.25' y='-47.75' width='94.5' height='94.5'/%3E%3Crect x='48.25' y='47.25' width='94.5' height='94.5'/%3E%3C/g%3E%3C/svg%3E");
+}
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* Plakietka trybu testowego (tryb.js) */
+.test body::before {
+  content: 'TEST';
+  position: fixed;
+  right: 8px;
+  bottom: calc(8px + env(safe-area-inset-bottom));
+  z-index: 9999;
+  padding: 4px 8px;
+  background: #ff2285;
+  color: #fff;
+  font: 800 12px/1 system-ui, sans-serif;
+  letter-spacing: 0.08em;
+  pointer-events: none;
+}
 [hidden] { display: none !important; }
+img { display: block; max-width: 100%; }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #eee;
-  color: #222;
-  line-height: 1.5;
+  font-family: 'Archivo', system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+  color: var(--tusz);
+  background: var(--papier);
+  -webkit-font-smoothing: antialiased;
 }
 
-.data {
-  font-size: 13px;
-  letter-spacing: 0.12em;
+/* ---------- Typografia ---------- */
+
+/* Szeroki plakat jak słowa na clipo.one */
+.plakat {
+  font-stretch: 125%;
+  font-weight: 900;
   text-transform: uppercase;
-  color: #777;
+  letter-spacing: -0.04em;
+  line-height: 0.92;
 }
 
-h1 { font-size: 28px; line-height: 1.2; }
+/* Wąski, ciężki jak nagłówki na thepatchsystem.com */
+.waski {
+  font-stretch: 64%;
+  font-weight: 850;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  line-height: 0.94;
+}
+
+/* Nagłówek ze słowami „po schodkach” */
+.schodki { font-size: 34px; }
+.schodki span { display: block; }
+.schodki span:nth-child(2) { padding-left: 1.4em; }
+.schodki span:nth-child(3) { padding-left: 0.5em; }
+
+/* ---------- Tła ---------- */
+
+.niebieskie {
+  background: var(--niebieski) var(--siatka) -24px 36px / 73px 73px;
+  color: var(--papier);
+}
+
+/* ---------- Uchwyty jak przy zaznaczeniu w Figmie ---------- */
+
+.uchwyty { position: relative; }
+.uchwyty::after {
+  --u: var(--zolty);
+  --r: var(--niebieski);
+  content: '';
+  position: absolute;
+  inset: -4px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--u) 0 0) 1px 1px / 6px 6px,
+    linear-gradient(var(--u) 0 0) calc(100% - 1px) 1px / 6px 6px,
+    linear-gradient(var(--u) 0 0) 1px calc(100% - 1px) / 6px 6px,
+    linear-gradient(var(--u) 0 0) calc(100% - 1px) calc(100% - 1px) / 6px 6px,
+    linear-gradient(var(--r) 0 0) 0 0 / 8px 8px,
+    linear-gradient(var(--r) 0 0) 100% 0 / 8px 8px,
+    linear-gradient(var(--r) 0 0) 0 100% / 8px 8px,
+    linear-gradient(var(--r) 0 0) 100% 100% / 8px 8px;
+  background-repeat: no-repeat;
+}
+
+/* ---------- Przyciski ---------- */
 
 .przycisk {
-  display: block;
-  width: fit-content;
-  margin: 0 auto;
-  padding: 16px 32px;
-  border: 0;
-  border-radius: 999px;
-  background: #333;
-  color: #fff;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 20px;
+  border: 1px solid var(--niebieski);
+  border-radius: 0;
+  background: var(--zolty);
+  color: var(--tusz);
   font: inherit;
-  font-size: 18px;
+  font-stretch: 64%;
+  font-weight: 850;
+  font-size: 20px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  text-align: center;
   text-decoration: none;
+  cursor: pointer;
 }
+.przycisk:active { transform: translateY(1px); }
+
+/* obrys – na niebieskim tle */
+.przycisk-obrys {
+  background: transparent;
+  border-color: var(--papier);
+  color: var(--papier);
+}
+.przycisk-obrys.uchwyty::after { --u: var(--peryw); --r: var(--papier); }
+
+/* obrys – na jasnym tle */
+.przycisk-ciemny {
+  background: transparent;
+  color: var(--niebieski);
+}
+.przycisk-ciemny.uchwyty::after { --u: var(--niebieski); --r: var(--papier); }
+
+.przycisk-maly { min-height: 40px; font-size: 15px; width: auto; padding: 8px 16px; }
 
 /* ---------- Strona z kołem ---------- */
 
@@ -39,142 +146,378 @@ h1 { font-size: 28px; line-height: 1.2; }
   position: fixed;
   inset: 0;
   overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  padding: 24px 0 calc(16px + env(safe-area-inset-bottom));
-  text-align: center;
   touch-action: none;           /* przesuwanie palcem nie przewija strony */
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;  /* przytrzymanie nie otwiera menu */
 }
 
-.scena {
-  --w: min(76vw, 300px, 44vh); /* szerokość karty */
-  --h: calc(var(--w) * 0.6);   /* wysokość karty */
-  position: relative;
-  flex: 1;
-  overflow: hidden;
-  perspective: 800px;
-}
-
-/* transform, opacity i z-index kart ustawia kolo.js – nie ustawiaj ich tu ani nie dodawaj transition */
-.karta {
+.naglowek {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: var(--w);
-  height: var(--h);
-  margin: calc(var(--h) / -2) 0 0 calc(var(--w) / -2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #fff;
-  border: 2px solid #999;
-  border-radius: 16px;
-  font-size: 22px;
-  color: #555;
-  backface-visibility: hidden;
-}
-.karta img { pointer-events: none; } /* przytrzymanie na zdjęciu nie otwiera menu na Androidzie */
-
-/* Znaczniki pokazujące, która karta jest wybrana */
-.scena::before,
-.scena::after {
-  content: '▶';
-  position: absolute;
-  top: 50%;
-  left: 8px;
-  transform: translateY(-50%);
-  color: #aaa;
-  z-index: 999;
-}
-.scena::after { content: '◀'; left: auto; right: 8px; }
-
-/* Podpowiedzi – widać tylko tę pasującą do stanu koła */
-.podpowiedzi {
-  height: 88px;
-  padding: 0 24px;
-  color: #666;
-}
-.podpowiedzi p { display: none; }
-[data-stan='czeka'] [data-pokaz='czeka'],
-[data-stan='kreci'] [data-pokaz='kreci'] { display: block; }
-
-.strzalka {
-  display: block;
-  font-size: 32px;
-  animation: podskok 1.2s ease-in-out infinite;
-}
-@keyframes podskok { 50% { transform: translateY(-10px); } }
-
-/* Koniec: zostaje sama wygrana karta, pod nią przycisk */
-[data-stan='koniec'] .karta:not(.wygrana) {
-  opacity: 0 !important;
-  transition: opacity 0.6s;
-}
-
-.scena .przycisk {
-  display: none;
-  position: absolute;
-  top: min(calc(50% + var(--h) / 2 + 28px), calc(100% - 72px)); /* na małym ekranie nie ucieka za krawędź */
+  top: 0;
   left: 0;
   right: 0;
-  z-index: 999;
+  z-index: 190;
+  padding: calc(20px + env(safe-area-inset-top)) 16px 0;
+  pointer-events: none;
 }
-[data-stan='koniec'] .scena .przycisk {
-  display: block;
-  animation: pojaw 0.5s 0.6s both; /* niewidoczny i nieklikalny przez pierwsze 0,6 s */
+.naglowek .schodki { font-size: clamp(26px, 8vw, 40px); }
+[data-stan='koniec'] .naglowek { opacity: 0; transition: opacity 0.3s; }
+
+/* Toast z instrukcją – żółta etykieta z uchwytami, widać tylko tę pasującą do stanu koła */
+.toast {
+  display: none;
+  width: fit-content;
+  margin-top: 18px;
+  padding: 10px 14px;
+  border: 1px solid var(--niebieski);
+  background: var(--zolty);
+  color: var(--tusz);
+  font-stretch: 64%;
+  font-weight: 850;
+  font-size: 19px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  animation: wjazd 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both, kiwanie 2.4s 0.5s ease-in-out infinite;
 }
-@keyframes pojaw { from { opacity: 0; visibility: hidden; transform: translateY(8px); } }
+[data-stan='czeka'] .toast[data-pokaz='czeka'],
+[data-stan='kreci'] .toast[data-pokaz='kreci'] { display: block; }
+@keyframes wjazd { from { opacity: 0; transform: translateX(-24px) rotate(-3deg); } }
+@keyframes kiwanie { 50% { transform: rotate(-2deg) scale(1.04); } }
 
-/* ---------- Strony z treścią (szczegóły, ankieta) ---------- */
+.strzalka { display: inline-block; animation: podskok 1s ease-in-out infinite; }
+@keyframes podskok { 50% { transform: translateY(-4px); } }
 
-.strona-tresci {
-  max-width: 560px;
-  margin: 0 auto;
-  padding: 32px 20px calc(48px + env(safe-area-inset-bottom));
+.scena {
+  --srodek: 60%;  /* wysokość środka koła */
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  perspective: 900px;
 }
 
-.strona-tresci header { margin-bottom: 24px; }
-.strona-tresci > p { margin-bottom: 16px; }
+/* Pas na środku – tu staje wylosowane słowo */
+.scena::before,
+.scena::after {
+  content: '';
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  height: 1px;
+  background: var(--peryw);
+  opacity: 0.6;
+}
+.scena::before { top: calc(var(--srodek) - min(6.5vw, 40px)); }
+.scena::after { top: calc(var(--srodek) + min(6.5vw, 40px)); }
 
-.zdjecie {
+/* Słowa na kole. transform, opacity i z-index ustawia kolo.js – nie ustawiaj ich tu. */
+.karta {
+  position: absolute;
+  top: var(--srodek);
+  left: 0;
+  right: 0;
+  height: min(13vw, 80px);
+  margin-top: max(-6.5vw, -40px);
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  margin-bottom: 16px;
-  border-radius: 12px;
-  background: #ccc;
-  color: #777;
-  object-fit: cover;
+  font-size: min(10.4vw, 64px);   /* 9 liter mieści się na 360 px */
+  font-stretch: 125%;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  white-space: nowrap;
+  color: var(--niebieski-2);
+  backface-visibility: hidden;
 }
+.karta.na-wprost { color: var(--papier); }
+[data-stan='koniec'] .karta:not(.wygrana) { opacity: 0 !important; transition: opacity 0.4s; }
 
-/* Ankieta */
-fieldset {
-  margin-bottom: 20px;
-  padding: 16px;
-  border: 2px solid #ccc;
-  border-radius: 12px;
-  background: #fff;
-}
-legend { padding: 0 6px; font-weight: 600; }
-fieldset p { margin-bottom: 8px; color: #777; font-size: 14px; }
-
-label {
+/* Wynik: karta wjeżdża z boku na cały ekran */
+.wynik {
+  position: absolute;
+  inset: calc(12px + env(safe-area-inset-top)) 12px calc(12px + env(safe-area-inset-bottom));
+  z-index: 1000;
   display: flex;
-  gap: 12px;
-  align-items: center;
-  padding: 10px 0;
+  flex-direction: column;
+  border: 1px solid var(--niebieski);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--niebieski);
+  visibility: hidden;
+  transform: translateX(calc(100% + 40px)) rotate(4deg);
 }
-label input { width: 22px; height: 22px; accent-color: #333; }
-
-.komunikat {
-  margin-bottom: 20px;
-  padding: 16px;
-  border-radius: 12px;
-  background: #ddd;
+[data-stan='koniec'] .wynik {
+  visibility: visible;
+  transform: none;
+  transition: transform 0.8s 0.5s cubic-bezier(0.5, 0, 0.25, 1), visibility 0s 0.5s;
+}
+.wynik-etykieta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 56px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--niebieski);
+  font-size: 21px;
+}
+.wynik-srodek {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 16px 20px 24px;
   text-align: center;
 }
+.wynik-obrazek { width: min(72%, 42vh); aspect-ratio: 1; object-fit: contain; }
+.wynik-tytul { font-size: clamp(28px, 9vw, 44px); }
+.wynik .przycisk { max-width: 320px; }
+
+/* Odliczanie zasłaniające koło (dzień 3 przed północą) */
+.odliczanie {
+  position: absolute;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px 16px;
+}
+
+/* ---------- Strony z treścią ---------- */
+
+.strona {
+  min-height: 100vh;
+  min-height: 100dvh;
+  padding: calc(28px + env(safe-area-inset-top)) 16px calc(56px + env(safe-area-inset-bottom));
+}
+.strona > * { max-width: 520px; margin-left: auto; margin-right: auto; }
+.strona > * + * { margin-top: 24px; }
+
+.wstep { font-size: 17px; }
+.niebieskie .wstep { color: var(--peryw); }
+
+/* Karta-tabela jak na thepatchsystem.com */
+.tabela {
+  overflow: hidden;
+  border: 1px solid var(--niebieski);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--niebieski);
+}
+.tabela > * + * { border-top: 1px solid var(--niebieski); }
+.tabela-etykieta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  min-height: 56px;
+  padding: 0 16px;
+  font-size: 21px;
+}
+.tabela-tytul { display: flex; }
+.tabela-numer {
+  flex: 0 0 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--niebieski);
+  font-size: 46px;
+  font-stretch: 70%;
+}
+.tabela-tytul h2 { flex: 1; padding: 18px 16px; font-size: 38px; }
+.tabela-obrazek { padding: 16px; background: #fff; }
+.tabela-obrazek img { width: 100%; max-width: 360px; margin: 0 auto; aspect-ratio: 1; object-fit: contain; }
+.tabela-tresc { padding: 18px 16px 20px; font-size: 17px; line-height: 1.4; }
+.tabela-tresc > * + * { margin-top: 12px; }
+.tabela-tresc h3 { font-size: 21px; }
+.tabela-przycisk { padding: 16px; }
+
+/* Lista z gwiazdkami jak na thepatchsystem.com */
+.gwiazdki { list-style: none; }
+.gwiazdki li { position: relative; padding-left: 22px; }
+.gwiazdki li + li { margin-top: 10px; }
+.gwiazdki li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 5px;
+  width: 11px;
+  height: 14px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath d='M4.875 2.588L5.5 0l.625 2.588c.214.887.575 1.655 1.06 2.272.482.613 1.085 1.074 1.782 1.345L11 7l-2.033.794c-.699.274-1.301.733-1.786 1.349-.481.613-.843 1.381-1.057 2.268L5.5 14l-.625-2.588c-.21-.871-.562-1.627-1.043-2.253-.495-.631-1.099-1.091-1.799-1.365L0 7l2.033-.795c.7-.274 1.304-.733 1.785-1.346.481-.612.841-1.38 1.057-2.271z'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 11 14'%3E%3Cpath d='M4.875 2.588L5.5 0l.625 2.588c.214.887.575 1.655 1.06 2.272.482.613 1.085 1.074 1.782 1.345L11 7l-2.033.794c-.699.274-1.301.733-1.786 1.349-.481.613-.843 1.381-1.057 2.268L5.5 14l-.625-2.588c-.21-.871-.562-1.627-1.043-2.253-.495-.631-1.099-1.091-1.799-1.365L0 7l2.033-.795c.7-.274 1.304-.733 1.785-1.346.481-.612.841-1.38 1.057-2.271z'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+
+/* Etykieta-naklejka (data ferii, godzina) */
+.naklejka {
+  display: inline-block;
+  padding: 8px 12px;
+  border: 1px solid var(--niebieski);
+  background: var(--zolty);
+  color: var(--tusz);
+  font-stretch: 64%;
+  font-weight: 850;
+  font-size: 19px;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+/* Dymki jak w FAQ na clipo.one */
+.dymek {
+  position: relative;
+  padding: 28px 24px;
+  border-radius: 32px;
+  background: var(--mieta);
+  color: var(--tusz);
+}
+.dymek::after {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: 48px;
+  width: 16px;
+  height: 16px;
+  background: inherit;
+  border-bottom-left-radius: 100%;
+}
+.dymek:nth-of-type(even)::after { left: auto; right: 48px; transform: scaleX(-1); }
+.dymek h2 { font-size: 22px; font-weight: 500; line-height: 1.05; letter-spacing: -0.03em; }
+.dymek p { font-size: 16px; letter-spacing: -0.02em; }
+.dymek > * + * { margin-top: 14px; }
+.dymek-zolty { background: var(--zolty); }
+.dymek-rozowy { background: var(--roz); }
+.dymek-niebieski { background: var(--niebieski); color: var(--papier); }
+.dymek-czarny { background: var(--tusz); color: var(--papier); }
+
+.licznik {
+  font-stretch: 70%;
+  font-weight: 900;
+  font-size: clamp(64px, 22vw, 120px);
+  line-height: 0.9;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Menu: kafle wielokrotnego wyboru ---------- */
+
+.grupa-naglowek {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+}
+.numerek {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  font-size: 13px;
+  letter-spacing: 0;
+}
+.dania {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 12px;
+}
+.danie input { position: absolute; opacity: 0; pointer-events: none; }
+.danie span {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--niebieski);
+  transition: background-color 0.15s;
+}
+.danie img { width: 100%; aspect-ratio: 1; padding: 12px 12px 4px; object-fit: contain; }
+.danie b {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  padding: 10px 12px 12px;
+  font-stretch: 64%;
+  font-weight: 850;
+  font-size: 18px;
+  line-height: 0.98;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.danie input:checked + span { background: var(--zolty); border-color: var(--niebieski); border-radius: 0; color: var(--tusz); }
+.danie input:checked + span::after {
+  --u: var(--zolty);
+  --r: var(--niebieski);
+  content: '';
+  position: absolute;
+  inset: -4px;
+  background:
+    linear-gradient(var(--u) 0 0) 1px 1px / 6px 6px,
+    linear-gradient(var(--u) 0 0) calc(100% - 1px) 1px / 6px 6px,
+    linear-gradient(var(--u) 0 0) 1px calc(100% - 1px) / 6px 6px,
+    linear-gradient(var(--u) 0 0) calc(100% - 1px) calc(100% - 1px) / 6px 6px,
+    linear-gradient(var(--r) 0 0) 0 0 / 8px 8px,
+    linear-gradient(var(--r) 0 0) 100% 0 / 8px 8px,
+    linear-gradient(var(--r) 0 0) 0 100% / 8px 8px,
+    linear-gradient(var(--r) 0 0) 100% 100% / 8px 8px;
+  background-repeat: no-repeat;
+}
+.danie input:focus-visible + span { outline: 2px solid var(--papier); outline-offset: 3px; }
+
+.przyciski { display: grid; gap: 14px; }
+
+.zamowienie { list-style: none; }
+.zamowienie li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 16px;
+  font-stretch: 64%;
+  font-weight: 850;
+  font-size: 22px;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.zamowienie li + li { border-top: 1px solid var(--niebieski); }
+.zamowienie img { width: 64px; height: 64px; object-fit: contain; }
+
+/* ---------- Ankieta ---------- */
+
+.odpowiedzi { display: grid; gap: 10px; margin-top: 20px; }
+.odpowiedzi .przycisk {
+  border-color: var(--tusz);
+  background: transparent;
+  color: var(--tusz);
+  font-size: 18px;
+  line-height: 1.05;
+}
+.dymek-niebieski .odpowiedzi .przycisk,
+.dymek-czarny .odpowiedzi .przycisk { border-color: var(--papier); color: var(--papier); }
+.odpowiedzi .wybrana { background: var(--tusz); color: var(--papier); }
+.dymek-niebieski .odpowiedzi .wybrana,
+.dymek-czarny .odpowiedzi .wybrana { background: var(--papier); color: var(--tusz); }
+.odpowiedzi button:disabled { opacity: 0.3; }
+.odpowiedzi .wybrana:disabled { opacity: 1; }
+
+dialog {
+  margin: auto;
+  width: min(92vw, 420px);
+  max-height: 90dvh;
+  padding: 28px 24px;
+  border: 0;
+  border-radius: 32px;
+  background: var(--tusz);
+  color: var(--papier);
+}
+dialog::backdrop { background: rgba(35, 54, 241, 0.85); }
+dialog p { margin-bottom: 24px; font-size: 19px; line-height: 1.3; letter-spacing: -0.02em; }

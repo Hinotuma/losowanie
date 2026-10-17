@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2336f1">
+  <title>Na co masz ochotę?</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+  <link rel="stylesheet" href="../style.css">
+  <script src="../tryb.js"></script>
+</head>
+<body class="strona niebieskie">
+
+  <h1 class="plakat schodki"><span>Na co</span><span>masz</span><span>ochotę?</span></h1>
+
+  <!-- Wybór dań. Zaznacz kafle, a potem „Zamawiam”. -->
+  <form class="menu">
+    <p class="wstep">Zaznacz, co chcesz zjeść. Możesz wybrać kilka rzeczy albo zdać się na los.</p>
+
+    <!-- Każda grupa to osobny fieldset. „Wybierz za mnie” losuje po jednym daniu z każdej grupy.
+         Nowe danie: skopiuj cały <label class="danie">…</label>, zmień obrazek i nazwę. -->
+    <fieldset>
+      <legend class="grupa-naglowek waski"><span class="numerek">01</span> Zupa</legend>
+      <div class="dania">
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/zurek.webp" alt=""><b>Żurek</b></span></label>
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/pomidorowa.webp" alt=""><b>Pomidorowa</b></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="grupa-naglowek waski"><span class="numerek">02</span> Danie główne</legend>
+      <div class="dania">
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/burger.webp" alt=""><b>Burger</b></span></label>
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/zeberka.webp" alt=""><b>Żeberka</b></span></label>
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/schabowy.webp" alt=""><b>Schabowy</b></span></label>
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/ryba.webp" alt=""><b>Ryba</b></span></label>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend class="grupa-naglowek waski"><span class="numerek">03</span> Na słodko</legend>
+      <div class="dania">
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/nalesniki-owoce.webp" alt=""><b>Naleśniki z owocami</b></span></label>
+        <label class="danie"><input type="checkbox"><span><img src="../obrazki/nalesniki-czekolada.webp" alt=""><b>Naleśniki z czekoladą i bananem</b></span></label>
+      </div>
+    </fieldset>
+
+    <p class="dymek dymek-rozowy komunikat" hidden>Zaznacz coś albo kliknij „Wybierz za mnie”.</p>
+    <p class="dymek dymek-rozowy blad" hidden>Nie udało się wysłać zamówienia. Sprawdź internet i spróbuj jeszcze raz.</p>
+
+    <div class="przyciski">
+      <button type="button" class="przycisk przycisk-obrys uchwyty wybierz-za-mnie">Wybierz za mnie</button>
+      <button class="przycisk uchwyty">Zamawiam</button>
+    </div>
+  </form>
+
+  <section class="podsumowanie" hidden>
+    <div class="tabela">
+      <p class="tabela-etykieta waski">Twoje zamówienie <span>✦</span></p>
+      <ul class="zamowienie"></ul>
+    </div>
+    <div class="dymek">
+      <h2>Smacznego!</h2>
+      <p>Zamówienie poszło do kuchni.</p>
+    </div>
+    <button class="przycisk przycisk-obrys uchwyty zmien">Zmień zamówienie</button>
+  </section>
+
+  <script>
+    // Zamówienie trafia do skrzynki na ntfy.sh – podgląd na Twoim telefonie: zamowienie.html
+    const SKRZYNKA = 'https://ntfy.sh/losowanie-9026bace04454ade' + (TEST ? '-test' : ''); // test: osobna skrzynka
+
+    const menu = document.querySelector('.menu');
+    const pola = [...menu.querySelectorAll('input')];
+    const podsumowanie = document.querySelector('.podsumowanie');
+    const komunikat = document.querySelector('.komunikat');
+    const blad = document.querySelector('.blad');
+    const nazwa = pole => pole.nextElementSibling.querySelector('b').textContent;
+    let pamiec = null;
+    try { pamiec = localStorage; } catch (e) {}
+
+    function pokazZamowienie() {
+      document.querySelector('.zamowienie').innerHTML = pola.filter(pole => pole.checked)
+        .map(pole => `<li><img src="${pole.nextElementSibling.querySelector('img').src}" alt="">${nazwa(pole)}</li>`).join('');
+      menu.hidden = true;
+      podsumowanie.hidden = false;
+      scrollTo(0, 0);
+    }
+
+    // Wybierz za mnie: po jednym losowym daniu z każdej grupy
+    document.querySelector('.wybierz-za-mnie').addEventListener('click', () => {
+      komunikat.hidden = true;
+      pola.forEach(pole => (pole.checked = false));
+      menu.querySelectorAll('fieldset').forEach(grupa => {
+        const opcje = grupa.querySelectorAll('input');
+        opcje[Math.floor(Math.random() * opcje.length)].checked = true;
+      });
+    });
+
+    menu.addEventListener('input', () => (komunikat.hidden = true));
+
+    menu.addEventListener('submit', e => {
+      e.preventDefault();
+      const dania = pola.filter(pole => pole.checked).map(nazwa);
+      komunikat.hidden = dania.length > 0;
+      blad.hidden = true;
+      if (!dania.length) return;
+      // Podsumowanie dopiero, gdy zamówienie naprawdę doszło
+      fetch(SKRZYNKA, { method: 'POST', body: dania.join(', ') })
+        .then(odpowiedz => {
+          if (!odpowiedz.ok) throw new Error();
+          pokazZamowienie();
+          pamiec?.setItem('menu-17', JSON.stringify(dania));
+        })
+        .catch(() => (blad.hidden = false));
+    });
+
+    document.querySelector('.zmien').addEventListener('click', () => {
+      podsumowanie.hidden = true;
+      menu.hidden = false;
+    });
+
+    // Zamówienie już było – od razu pokaż podsumowanie (z zaznaczonymi daniami do ewentualnej zmiany)
+    const zapisane = JSON.parse(pamiec?.getItem('menu-17') || 'null');
+    if (zapisane) {
+      pola.forEach(pole => (pole.checked = zapisane.includes(nazwa(pole))));
+      pokazZamowienie();
+    }
+  </script>
+</body>
+</html>
