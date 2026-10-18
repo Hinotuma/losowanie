@@ -588,3 +588,7 @@ dialog p { margin-bottom: 24px; font-size: 19px; line-height: 1.3; letter-spacin
   text-transform: uppercase;
 }
 .plan-b { display: block; margin-top: 6px; font-size: 14px; color: #666; }
+
+/* Krok już zaliczony – przygaszona karta z naklejką „Zaliczone” (np. Kraków po przyjeździe) */
+.tabela.zaliczona { opacity: 0.6; }
+.tabela.zaliczona .tabela-obrazek { display: none; }

@@ -16,33 +16,23 @@
 
   <h1 class="plakat schodki"><span>Wycieczka</span><span>z&nbsp;rodziną</span></h1>
 
-  <!-- Pierwszy przystanek – widać od razu.
-       Zdjęcie: wstaw plik do folderu obrazki i podmień src (plik .jpg/.webp, nazwa małymi literami, bez spacji i polskich znaków).
-       Link: w Google Maps → Udostępnij → Kopiuj link i wklej w href. -->
-  <article class="tabela">
+  <!-- Odliczanie do kolejnego side questa (czas.js). Sekcje mają hidden, żeby nie mignęły przed czasem.
+       Daty w formacie 2026-10-18T12:00+02:00 (+02:00 = czas polski w październiku). -->
+  <article class="tabela" hidden data-do="2026-10-18T12:00+02:00">
+    <p class="tabela-etykieta waski">Side quest <span>✦</span></p>
+    <p class="naklejka naklejka-gora uchwyty">12:00</p>
+    <div class="tabela-tresc"><p>Kolejne zadanie odblokuje się o&nbsp;12:00. Zostało:</p><p class="licznik" data-licznik>--:--:--</p></div>
+  </article>
+  <a class="przycisk uchwyty" hidden data-od="2026-10-18T12:00+02:00" href="sidequest.html">Zobacz co dalej →</a>
+
+  <!-- Pierwszy przystanek – już zaliczony -->
+  <article class="tabela zaliczona">
     <p class="tabela-etykieta waski">Przystanek <span>✦</span></p>
+    <p class="naklejka naklejka-gora uchwyty">Zaliczone ✓</p>
     <div class="tabela-tytul waski"><span class="tabela-numer">01</span><h2>Kraków</h2></div>
     <div class="tabela-obrazek"><img src="../obrazki/krakow.webp" alt=""></div>
     <div class="tabela-tresc"><p>Jedziemy do Krakowa! Pierwszy przystanek:</p><p>Aleja Zygmunta Krasińskiego&nbsp;9<br>Stare Miasto, Kraków</p></div>
     <div class="tabela-przycisk"><a class="przycisk uchwyty" href="https://www.google.com/maps/search/?api=1&amp;query=Aleja%20Zygmunta%20Krasi%C5%84skiego%209%2C%20Krak%C3%B3w">Wyświetl lokalizację</a></div>
-  </article>
-
-  <!-- Dalsza część odsłania się według godziny (czas.js). Sekcje mają hidden, żeby nie mignęły przed czasem.
-       Daty w formacie 2026-10-18T12:00+02:00 (+02:00 = czas polski w październiku). -->
-
-  <article class="tabela" hidden data-do="2026-10-18T12:00+02:00">
-    <p class="tabela-etykieta waski">Side quest <span>✦</span></p>
-    <p class="naklejka naklejka-gora uchwyty">12:00</p>
-    <div class="tabela-tresc"><p>Kolejne zadanie odblokuje się w&nbsp;niedzielę w&nbsp;południe. Zostało:</p><p class="licznik" data-licznik>--:--:--</p></div>
-  </article>
-
-  <article class="tabela" hidden data-od="2026-10-18T12:00+02:00">
-    <p class="tabela-etykieta waski">Side quest <span>✦</span></p>
-    <p class="naklejka naklejka-gora uchwyty">14:30</p>
-    <div class="tabela-tytul waski"><span class="tabela-numer">02</span><h2>Wawel Escape Room</h2></div>
-    <div class="tabela-obrazek"><img src="../obrazki/escape.webp" alt=""></div>
-    <div class="tabela-tresc"><p>Plac Wszystkich Świętych 8<br>31-004 Kraków</p></div>
-    <div class="tabela-przycisk"><a class="przycisk uchwyty" href="https://www.google.com/maps/search/?api=1&amp;query=Wawel%20Escape%20Room%2C%20Plac%20Wszystkich%20%C5%9Awi%C4%99tych%208%2C%2031-004%20Krak%C3%B3w">Wyświetl lokalizację</a></div>
   </article>
 
   <script src="../czas.js?v=9"></script>

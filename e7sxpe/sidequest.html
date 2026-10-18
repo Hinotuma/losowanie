@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#2336f1">
+  <title>Side quest</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+  <link rel="stylesheet" href="../style.css?v=9">
+  <script src="../tryb.js?v=9"></script>
+</head>
+<body class="strona-kola niebieskie" data-dzien="sidequest" data-tryb="stop" data-stan="czeka">
+
+  <!-- Losowanie side questa – odblokowuje się o 12:00 (zasłona z odliczaniem, czas.js) -->
+  <section class="odliczanie niebieskie" hidden data-do="2026-10-18T12:00+02:00">
+    <h1 class="plakat schodki"><span>Side</span><span>quest za</span></h1>
+    <p class="licznik" data-licznik>--:--:--</p>
+  </section>
+
+  <header class="naglowek">
+    <h1 class="plakat schodki"><span>Side</span><span>quest</span></h1>
+  </header>
+
+  <!-- Instrukcje na środku ekranu – znikają, gdy akcja zostanie wykonana -->
+  <p class="toast uchwyty" data-pokaz="czeka"><span class="strzalka">↑</span> Przesuń palcem w&nbsp;górę</p>
+  <p class="toast uchwyty" data-pokaz="kreci">Dotknij ekranu, aby&nbsp;zatrzymać</p>
+
+  <!-- Słowa na kole: maks. 9 liter, żeby zmieściły się na telefonie -->
+  <main class="scena">
+    <div class="karta">Bowling</div>
+    <div class="karta">Karaoke</div>
+    <div class="karta">Muzeum</div>
+    <div class="karta">Zakupy</div>
+    <div class="karta wygrana">Escape</div>
+    <div class="karta">Kino</div>
+    <div class="karta">Spacer</div>
+    <div class="karta">Lodowisko</div>
+  </main>
+
+  <section class="wynik">
+    <p class="wynik-etykieta waski">Side quest <span>✦</span></p>
+    <div class="wynik-srodek">
+      <img class="wynik-obrazek" src="../obrazki/escape.webp" alt="">
+      <h2 class="wynik-tytul plakat">Escape room</h2>
+      <a class="przycisk uchwyty" href="escape.html">Pokaż</a>
+    </div>
+  </section>
+
+  <script src="../czas.js?v=9"></script>
+  <script src="../kolo.js?v=9"></script>
+</body>
+</html>
