@@ -147,8 +147,8 @@ addEventListener('pointerup', () => (palecY = null));
 addEventListener('pointercancel', () => (palecY = null));
 addEventListener('resize', zmierz);
 
-// Losowanie już było – od razu pokaż wynik.
-if (pamiec?.getItem(klucz)) {
+// Losowanie już było (zapamiętane albo oznaczone w HTML przez data-wylosowane) – od razu pokaż wynik.
+if (body.hasAttribute('data-wylosowane') || pamiec?.getItem(klucz)) {
   obrot = cel;
   body.dataset.stan = 'koniec';
 }

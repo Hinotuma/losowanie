@@ -9,8 +9,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
-  <link rel="stylesheet" href="../style.css?v=11">
-  <script src="../tryb.js?v=11"></script>
+  <link rel="stylesheet" href="../style.css?v=12">
+  <script src="../tryb.js?v=12"></script>
 </head>
 <body class="strona niebieskie">
 
@@ -79,10 +79,9 @@
     </article>
     <a class="przycisk uchwyty" hidden data-od="2026-10-17T17:00+02:00" href="wycieczka.html">Losuj dalej →</a>
 
-    <button class="przycisk przycisk-obrys uchwyty zmien">Zmień zamówienie</button>
   </section>
 
-  <script src="../czas.js?v=11"></script>
+  <script src="../czas.js?v=12"></script>
   <script>
     // Zamówienie trafia do skrzynki na ntfy.sh – podgląd na Twoim telefonie: zamowienie.html
     const SKRZYNKA = 'https://ntfy.sh/losowanie-001431f436290a73' + (TEST ? '-test' : ''); // test: osobna skrzynka
@@ -133,17 +132,11 @@
         .catch(() => (blad.hidden = false));
     });
 
-    document.querySelector('.zmien').addEventListener('click', () => {
-      podsumowanie.hidden = true;
-      menu.hidden = false;
-    });
 
-    // Zamówienie już było – od razu pokaż podsumowanie (z zaznaczonymi daniami do ewentualnej zmiany)
-    const zapisane = JSON.parse(pamiec?.getItem(KLUCZ) || 'null');
-    if (zapisane) {
-      pola.forEach(pole => (pole.checked = zapisane.includes(nazwa(pole))));
-      pokazZamowienie();
-    }
+    // Zamówienie już złożone (17.10): Żurek, Żeberka, Tiramisu – od razu podsumowanie
+    const zamowione = ['Żurek', 'Żeberka', 'Tiramisu'];
+    pola.forEach(pole => (pole.checked = zamowione.includes(nazwa(pole))));
+    pokazZamowienie();
   </script>
 </body>
 </html>
