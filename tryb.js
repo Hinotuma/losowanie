@@ -1,13 +1,7 @@
-// Tryb testowy – tylko na Twoim telefonie. Włączasz go, otwierając dowolną stronę z ?test,
-// wyłączasz przez ?test=0. Zapamiętuje się w tej przeglądarce, a telefon Pauliny nigdy go nie dostanie.
-// W teście: losowanie się nie zapisuje (można kręcić w kółko), wszystkie sekcje z godzinami są widoczne,
-// a zamówienia idą do osobnej, testowej skrzynki.
+// Tryb testowy WYŁĄCZONY (18.10): linki z ?test działają teraz dokładnie jak produkcja
+// (blokady czasowe, zapamiętane losowania, zamówienia do prawdziwej skrzynki) – na wypadek,
+// gdyby Paulina dostała link testowy. Zapamiętaną wcześniej flagę testu kasujemy.
+// Żeby znowu włączyć testy, przywróć poprzednią wersję tego pliku z historii gita.
 
-let TEST = false;
-try {
-  const test = new URLSearchParams(location.search).get('test');
-  if (test === '0') localStorage.removeItem('test');
-  else if (test !== null) localStorage.setItem('test', 'tak');
-  TEST = localStorage.getItem('test') === 'tak';
-} catch (e) {}
-if (TEST) document.documentElement.classList.add('test');
+const TEST = false;
+try { localStorage.removeItem('test'); } catch (e) {}
